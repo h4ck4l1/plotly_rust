@@ -1,0 +1,26 @@
+[package]
+name = "frontend"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.95"
+async-std = { version = "1.13.0", features = ["tokio1","tokio02","tokio03","attributes"] }
+dioxus = { version = "0.6.3", features = ["router","web"] }
+gloo = "0.11.0"
+reqwest = { version = "0.12.15", features = ["json", "cookies", "gzip", "rustls-tls"] }
+tracing = "0.1.41"
+web-sys = { version = "0.3.77", features = ["Document", "Window", "HtmlElement", "HtmlInputElement", "IdbFactory", "IdbDatabase", "IdbObjectStore", "IdbTransaction", "IdbRequest", "IdbOpenDbRequest", "IdbKeyRange", "Event", "EventTarget", "DomException","HtmlTableCellElement","HtmlTableRowElement"] }
+serde = { version = "1.0.218", features = ["derive"] }
+serde_json = "1.0.139"
+plotly = { version = "0.12.1", features = ["image", "js-sys", "ndarray", "plotly_embed_js", "plotly_image", "with-axum", "wasm", "wasm-bindgen", "wasm-bindgen-futures"] }
+wasm-bindgen = { version = "0.2.100", features = ["serde", "serde_json", "serde-serialize"] }
+ndarray = { version = "0.16.1", features = ["rayon", "serde"] }
+ndarray-stats = "0.6.0"
+serde-wasm-bindgen = "0.6.3"
+
+
+
+[[bin]]
+name = "p"
+path = "src/practice.rs"

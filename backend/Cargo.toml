@@ -17,3 +17,10 @@ rand = { version = "0.9.0", features = ["serde"] }
 anyhow = "1.0.95"
 polars = { version = "0.46.0", features = ["full","csv"] }
 tower-http = { version = "0.6.2", features = ["full"] }
+pyo3 = { version = "0.24.2", features = ["auto-initialize"] }
+thiserror = "2.0.12"
+
+
+[[bin]]
+name = "p"
+path = "src/practice.rs"

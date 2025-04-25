@@ -5,8 +5,6 @@ use crate::{AppState, BackendError, CAP_DIAMETER};
 
 pub async fn mushroom_cap_diameter(State(app_state): State<Arc<AppState>>) -> Result<impl IntoResponse,BackendError> {
 
-    tracing::info!("entered cap dia metere handler");
-
     Ok(
         Json(
             app_state.df()

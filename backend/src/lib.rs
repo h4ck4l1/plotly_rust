@@ -48,9 +48,7 @@ pub enum BackendError {
     #[error("\n Polars General Error occurred, Can be from Collecting\nerror: {0}\n")]
     PolarsGeneralError(#[from] polars::error::PolarsError),
     #[error("\n General Std Io Error\nerror: {0}\n")]
-    StdIoError(#[from] std::io::Error),
-    #[error("\n PyO3 Python function Error\nerror: {0}")]
-    PyO3Error(#[from] pyo3::PyErr)
+    StdIoError(#[from] std::io::Error)
 }
 
 
@@ -60,7 +58,6 @@ impl IntoResponse for BackendError {
             BackendError::PolarsGeneralError(error) => (StatusCode::FAILED_DEPENDENCY,error.to_string()),
             BackendError::TokioJoinError(error) => (StatusCode::EXPECTATION_FAILED,error.to_string()),
             BackendError::StdIoError(error) => (StatusCode::EXPECTATION_FAILED,error.to_string()),
-            BackendError::PyO3Error(py_err) => (StatusCode::EXPECTATION_FAILED,py_err.to_string()),
         };
 
         (status_code,error_string).into_response()

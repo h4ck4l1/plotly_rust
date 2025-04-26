@@ -19,7 +19,3 @@ polars = { version = "0.46.0", features = ["full","csv"] }
 tower-http = { version = "0.6.2", features = ["full"] }
 thiserror = "2.0.12"
 
-
-[[bin]]
-name = "p"
-path = "src/practice.rs"

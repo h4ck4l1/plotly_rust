@@ -36,7 +36,7 @@ pub enum Route {
     MushroomFirstCategoricalColumn {}
 }
 
-
+#[component]
 pub fn App() -> Element {
     rsx!{
         head {  
@@ -71,3 +71,38 @@ pub fn HomePage() -> Element {
     }
 }
 
+#[component]
+pub fn CubeSpinner() -> Element {
+
+    rsx!{
+        div {
+            div {
+                class: "cube-spinner-container",
+                div {  
+                    class: "cube-spinner-cube-container"
+                }
+                div {  
+                    class: "cube-spinner-cube",
+                    div {  
+                        class: "cube-spinner-cube-side cube-spinner-cube-side--front"
+                    }
+                    div {  
+                        class: "cube-spinner-cube-side cube-spinner-cube-side--back"
+                    }
+                    div {  
+                        class: "cube-spinner-cube-side cube-spinner-cube-side--right"
+                    }
+                    div {  
+                        class: "cube-spinner-cube-side cube-spinner-cube-side--left"
+                    }
+                    div {  
+                        class: "cube-spinner-cube-side cube-spinner-cube-side--top"
+                    }
+                    div {  
+                        class: "cube-spinner-cube-side cube-spinner-cube-side--bottom"
+                    }
+                }
+            }
+        }
+    }
+}

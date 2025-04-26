@@ -72,3 +72,56 @@ impl PointData {
 
 
 ```
+
+
+```rust
+
+let table_click = move |e:MouseEvent | {
+    e.prevent_default();
+    let raw = e.as_web_event();
+    let target = raw
+        .target()
+        .and_then(|t| t.dyn_into::<HtmlElement>().ok())
+        .unwrap();
+
+    if let Some(cell_el) = target.closest("td").unwrap() {
+        let cell = cell_el.dyn_into::<HtmlTableCellElement>().unwrap();
+        let col = cell.cell_index();
+    };
+
+    if let Some(cell_el) = target.closest("tr").unwrap() {
+        let cell = cell_el.dyn_into::<HtmlTableRowElement>().unwrap();
+        let row = cell.row_index();
+    }
+};
+
+let table_rows = use_signal(|| vec![
+    ("Sohail","Uddin",25),
+    ("Shafi","Uddin",22),
+    ("Akhtar", "PArveen",21)
+]);
+let row_index = use_signal(|| 0usize);
+let col_index = use_signal(|| 0usize);
+
+table {  
+    thead {  
+        tr {  
+            th { "Name Col" }
+            th { "Age Col" }
+            th { "Place Col" }
+        }
+    }
+    tbody {
+        id: "table-element",
+        onclick: table_click,
+        for (i,(first_name, last_name, age)) in table_rows().iter().enumerate() {
+            tr {
+                td { border: "2px solid cyan","{first_name}" }
+                td { border: "2px solid cyan","{last_name}" }
+                td { border: "2px solid cyan","{age}" }
+            }
+        }
+    }
+}
+
+```

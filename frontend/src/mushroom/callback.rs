@@ -1,6 +1,9 @@
+use std::time::Duration;
+
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
-use web_sys::{js_sys::Function, window, HtmlElement};
+use plotly::{plot::Traces, Plot};
+use web_sys::{js_sys::{self, Function, Object}, window, HtmlElement};
 
 
 #[wasm_bindgen]
@@ -11,8 +14,8 @@ extern "C" {
 
     #[wasm_bindgen(method,structural,js_name=on)]
     fn on(this: &PlotlyDiv, event: &str, cb: &Function);
-}
 
+}
 
 
 pub fn bind_click<F>(div_id: &str, mut cb: F)
@@ -29,7 +32,7 @@ where
             .expect("\n Couldn't serialize the event \n");
         cb(event);
     }) as Box<dyn FnMut(JsValue)>);
-    plot_div.on("plotly_click", &closure.as_ref().unchecked_ref());
+    plot_div.on("plotly_click", closure.as_ref().unchecked_ref());
     closure.forget();
 }
 

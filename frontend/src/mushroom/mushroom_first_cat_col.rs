@@ -1,57 +1,47 @@
-use std::time::Duration;
+use std::{any::Any, time::Duration};
 use dioxus::prelude::*;
-use plotly::{ histogram::Histogram, Plot};
+use itertools::Itertools;
+use plotly::{ common::{color::Rgb, Font, Marker, Mode, Pad}, layout::{themes::PLOTLY_DARK, update_menu::{Button, UpdateMenu}, Axis}, plot::Traces, Histogram, Layout, Plot, Scatter};
 use serde::{Deserialize, Serialize};
-use crate::{Route, CubeSpinner,CUSTOM_LAYOUT};
+use serde_json::Value;
+use web_sys::js_sys::Math;
+use crate::{mushroom::callback, CubeSpinner, Route, CUSTOM_LAYOUT};
 
 #[component]
 pub fn MushroomFirstCategoricalColumn() -> Element {
+    let div_id = use_signal(|| "mushroom-plot");
 
-    let is_hidden = use_signal(|| true);
 
-    use_effect(move || {
-        let mut is_hidden = is_hidden.clone();
-        spawn(async move {
-            let plot = MushroomCapDiameter().await.unwrap_or(Plot::default());
-            is_hidden.set(false);
-            async_std::task::sleep(Duration::from_millis(500)).await;
-            if !is_hidden() {
-                let _ = plotly::bindings::new_plot("mushroom-plot", &plot).await;
-            }
-        });
-    });
 
     rsx!{
-        div { h1 {  
-            "Mushroom First Cat col"
-        } }
         div {  
-            if !is_hidden() {
-                div {  
-                    id: "mushroom-plot"
-                }
-            } else {
-                div {  
-                    CubeSpinner {  }
-                }
+            h1 {  
+                "Mushroom First Animated Plot"
             }
         }
+        div {
+            id: "{div_id()}"
+        }
+        marker {  }
     }
 }
 
-pub async fn MushroomCapDiameter() -> Result<Plot,anyhow::Error> {
+async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
     
     let x = reqwest::Client::new()
-        .get("http://localhost:3000/mushroom_cap_diameter")
+        .get("http://localhost:3000/mushroom_first_cat_col")
         .send()
         .await?
         .json::<Vec<i16>>()
         .await?;
+
+
     let mut plot = Plot::new();
-    plot.set_layout(CUSTOM_LAYOUT.clone());
+
     plot.add_trace(
         Histogram::new(x)
-            .auto_bin_x(true)
+            
     );
-    Ok(plot)
+
+    Ok(Plot::default())
 }

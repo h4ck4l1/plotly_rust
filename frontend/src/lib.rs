@@ -42,7 +42,7 @@ pub fn App() -> Element {
         head {  
             document::Meta {name: "viewport", content: "width=device-width, initial-scale=1.0"}
             document::Stylesheet {href: MAIN_CSS}
-            document::Script {src: "https://cdn.plot.ly/plotly-2.14.0.min.js"}
+            document::Script {src: "https://cdn.plot.ly/plotly-3.0.1.min.js"}
         }
         Router::<Route>{}
     }    

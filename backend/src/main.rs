@@ -25,10 +25,10 @@ async fn main() -> Result<(),BackendError> {
         
         MUSHROOM
             .to_owned()
-            .select([all().shrink_dtype()])
+            .select([all().cast(polars::prelude::DataType::Float32)])
             .collect()?,
 
-                    // Lazy initialization of json data
+        // Lazy initialization of json data
 
         ALL_FIT_JSON
             .to_owned()

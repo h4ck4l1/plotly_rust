@@ -11,56 +11,16 @@ pub mod mushroom_first_cat_col;
 pub mod callback;
 
 
-
-#[derive(Debug,Serialize,Deserialize,Default)]
-pub struct MushroomData {
-    col_data: Vec<f32>,
-    first_fit: Vec<f32>,
-    second_fit: Vec<f32>,
-    third_fit: Vec<f32>,
-    fourth_fit: Vec<f32>,
-    fifth_fit: Vec<f32>,
-}
-
-impl MushroomData {
-    pub fn col_data(&self) -> &Vec<f32> {
-        &self.col_data
-    }
-    pub fn first_fit(&self) -> &Vec<f32> {
-        &self.first_fit
-    }
-
-    pub fn second_fit(&self) -> &Vec<f32> {
-        &self.second_fit
-    }
-
-    pub fn third_fit(&self) -> &Vec<f32> {
-        &self.third_fit
-    }
-
-    pub fn fourth_fit(&self) -> &Vec<f32> {
-        &self.fourth_fit
-    }
-
-    pub fn fifth_fit(&self) -> &Vec<f32> {
-        &self.fifth_fit
-    }
-    
-}
-
-
-
 pub async fn get_histogram(col_data: Vec<f32>,fit_data: Value,col_name: &str,bar_gap: f32) -> Result<Plot,anyhow::Error> {
     
-    let mut names = Vec::new();
-    let x = &fit_data[col_name]["x"];
+    let x = &fit_data["x"];
     let x = serde_json::from_value::<Vec<f32>>(x.to_owned())?;
+    let mut names = Vec::new();
     if let Some(cap_dia) = fit_data[col_name].as_object() {
         for key in cap_dia.keys() {
             names.push(key.clone());
         }
     }
-    let x_mean = x.iter().sum::<f32>()/x.len() as f32;
     let mut plot = Plot::new();
     plot.add_trace(
         Histogram::new(col_data)
@@ -70,18 +30,18 @@ pub async fn get_histogram(col_data: Vec<f32>,fit_data: Value,col_name: &str,bar
         CUSTOM_LAYOUT.clone()
             .bar_gap(bar_gap as f64)
     );
-    for k in names {
-        let y = &fit_data[col_name][&k];
-        let y = serde_json::from_value::<Vec<f32>>(y.to_owned())?;
-        let y_mean = y.iter().sum::<f32>()/(y.len() as f32);
-        plot.add_trace(
-            Scatter::new(x.clone(),y)
-                .mode(plotly::common::Mode::Lines)
-                .name(&format!("Mean of {}",&k))
-                .hover_template(&format!("Mean: {:?}",y_mean))
-                .line(Line::new().dash(plotly::common::DashType::DashDot))
-                .show_legend(false)
-        );
-    }
+    // for k in names {
+    //     let y = &fit_data[col_name][&k];
+    //     let y = serde_json::from_value::<Vec<f32>>(y.to_owned())?;
+    //     let y_mean = y.iter().sum::<f32>()/(y.len() as f32);
+    //     plot.add_trace(
+    //         Scatter::new(x.clone(),y)
+    //             .mode(plotly::common::Mode::Lines)
+    //             .name(&format!("Mean of {}",&k))
+    //             .hover_template(&format!("Mean: {:?}",y_mean))
+    //             .line(Line::new().dash(plotly::common::DashType::DashDot))
+    //             .show_legend(false)
+    //     );
+    // }
     Ok(plot)
 }

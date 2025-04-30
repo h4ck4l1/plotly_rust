@@ -13,19 +13,19 @@ use super::get_histogram;
 pub fn MushroomFirstCategoricalColumn() -> Element {
     let div_id = use_signal(|| "mushroom-plot");
     let mut error_response = use_signal(|| "".to_string());
-    let is_hidden = use_signal(|| true);
+    // let is_hidden = use_signal(|| true);
 
     use_effect(move || {
-        let mut is_hidden = is_hidden.clone();
+        // let mut is_hidden = is_hidden.clone();
         spawn(async move {
             match mushroom_first_cat_col_data_request().await {
                 Ok(plot) => {
-                    is_hidden.set(false);
+                    // is_hidden.set(false);
                     async_std::task::sleep(Duration::from_secs(500)).await;
                     let _ = plotly::bindings::new_plot(div_id(), &plot).await;
                 },
                 Err(err) => {
-                    is_hidden.set(true);
+                    // is_hidden.set(true);
                     error_response.set(err.to_string());
                 }
             }
@@ -38,18 +38,8 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
                 "Mushroom First Animated Plot"
             }
         }
-        {
-            if is_hidden() {
-                rsx!{
-                    CubeSpinner {  }
-                }
-            } else {
-                rsx!{
-                    div {  
-                        id: "{div_id()}"
-                    }
-                }
-            }
+        div {  
+            id: "{div_id()}"
         }
         div {  
             "{error_response()}"
@@ -69,19 +59,17 @@ pub fn MushroomCatColComponent() -> Element {
 async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
     
     let full_data = reqwest::Client::new()
-        .get("http://localhost:3000/mushroom_first_cat_col")
+        .get("http://localhost:3000/mushroom_cap_diameter")
         .send()
         .await?
         .json::<Value>()
         .await?;
 
-    let col_data = full_data.get("cap_diameter").unwrap();
-    let fit_data = full_data.get("cap_dia_json").unwrap();
-
+    let col_data = &full_data["cap_diameter"];
+    let fit_data = &full_data["cap_dia_json"];
     let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
     let fit_data = serde_json::from_value(fit_data.to_owned())?;
-
     let mut plot = get_histogram(col_data, fit_data, "cap_diameter", 0f32).await?;
-    
+    plot.show_image(plotly::ImageFormat::JPEG, 1000, 1000);
     Ok(plot)
 }

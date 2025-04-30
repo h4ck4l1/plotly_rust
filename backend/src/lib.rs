@@ -73,9 +73,9 @@ pub enum BackendError {
 impl IntoResponse for BackendError {
     fn into_response(self) -> axum::response::Response {
         let (status_code,error_string) = match self {
-            BackendError::PolarsGeneralError(error) => (StatusCode::FAILED_DEPENDENCY,error.to_string()),
-            BackendError::TokioJoinError(error) => (StatusCode::EXPECTATION_FAILED,error.to_string()),
-            BackendError::StdIoError(error) => (StatusCode::EXPECTATION_FAILED,error.to_string()),
+            BackendError::PolarsGeneralError(error) => (StatusCode::FAILED_DEPENDENCY,format!("PolarsGeneralError: {}",error.to_string())),
+            BackendError::TokioJoinError(error) => (StatusCode::EXPECTATION_FAILED,format!("TokioJoinError: {}",error.to_string())),
+            BackendError::StdIoError(error) => (StatusCode::EXPECTATION_FAILED,format!("StdIoError: {}",error.to_string())),
         };
 
         (status_code,error_string).into_response()

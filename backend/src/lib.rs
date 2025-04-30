@@ -1,8 +1,11 @@
+use std::fs;
+
 use axum::response::IntoResponse;
 use once_cell::sync::Lazy;
 use polars::prelude::*;
 use serde::{Deserialize, Serialize};
 use hyper::StatusCode;
+use serde_json::Value;
 
 pub mod mushroom_pages;
 
@@ -23,6 +26,16 @@ pub static MUSHROOM: Lazy<LazyFrame> = Lazy::new(|| {
         .finish()
         .expect("Failed to load the Mushroom LazyFrame")
         
+});
+
+
+pub static ALL_FIT_JSON: Lazy<Value> = Lazy::new(|| {
+    let json_string = fs::read_to_string("datafolder/all_cols_fitted_data.json")
+        .expect("No ALL_COLS_FITTED_JSON data");
+
+    serde_json::from_str(&json_string)
+        .expect("Failed to convert to serde Value")
+
 });
 
 

@@ -41,16 +41,21 @@ pub static ALL_FIT_JSON: Lazy<Value> = Lazy::new(|| {
 
 #[derive(Debug,Serialize,Deserialize)]
 pub struct AppState {
-    df: DataFrame
+    df: DataFrame,
+    json: Value
 }
 
 impl AppState {
-    pub fn new(df: DataFrame) -> Self {
-        Self { df }
+    pub fn new(df: DataFrame,json: Value) -> Self {
+        Self { df ,json }
     }
 
     pub fn df(&self) -> &DataFrame {
         &self.df
+    }
+
+    pub fn json(&self) -> &Value {
+        &self.json
     }
 }
 

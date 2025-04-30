@@ -68,14 +68,20 @@ pub fn MushroomCatColComponent() -> Element {
 
 async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
     
-    let (col_data,fit_data,col_name) = reqwest::Client::new()
+    let full_data = reqwest::Client::new()
         .get("http://localhost:3000/mushroom_first_cat_col")
         .send()
         .await?
-        .json::<(Vec<f32>,Value,String)>()
+        .json::<Value>()
         .await?;
 
-    let mut plot = get_histogram(col_data, fit_data, &col_name, 0f32).await?;
+    let col_data = full_data.get("cap_diameter").unwrap();
+    let fit_data = full_data.get("cap_dia_json").unwrap();
+
+    let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
+    let fit_data = serde_json::from_value(fit_data.to_owned())?;
+
+    let mut plot = get_histogram(col_data, fit_data, "cap_diameter", 0f32).await?;
     
-    Ok(Plot::default())
+    Ok(plot)
 }

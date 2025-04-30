@@ -50,12 +50,12 @@ impl MushroomData {
 
 
 
-pub async fn get_histogram(col_data: Vec<f32>,data: Value,col_name: &str,bar_gap: f32) -> Result<Plot,anyhow::Error> {
+pub async fn get_histogram(col_data: Vec<f32>,fit_data: Value,col_name: &str,bar_gap: f32) -> Result<Plot,anyhow::Error> {
     
     let mut names = Vec::new();
-    let x = &data[col_name]["x"];
+    let x = &fit_data[col_name]["x"];
     let x = serde_json::from_value::<Vec<f32>>(x.to_owned())?;
-    if let Some(cap_dia) = data[col_name].as_object() {
+    if let Some(cap_dia) = fit_data[col_name].as_object() {
         for key in cap_dia.keys() {
             names.push(key.clone());
         }
@@ -71,7 +71,7 @@ pub async fn get_histogram(col_data: Vec<f32>,data: Value,col_name: &str,bar_gap
             .bar_gap(bar_gap as f64)
     );
     for k in names {
-        let y = &data[col_name][&k];
+        let y = &fit_data[col_name][&k];
         let y = serde_json::from_value::<Vec<f32>>(y.to_owned())?;
         let y_mean = y.iter().sum::<f32>()/(y.len() as f32);
         plot.add_trace(

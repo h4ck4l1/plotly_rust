@@ -2,7 +2,7 @@
 
 use std::sync::Arc;
 use axum::{http::HeaderValue, routing, Router};
-use backend::{mushroom_pages::mushroom_cap_diameter::mushroom_cap_diameter, AppState, BackendError, MUSHROOM};
+use backend::{mushroom_pages::mushroom_cap_diameter::mushroom_cap_diameter, AppState, BackendError, ALL_FIT_JSON, MUSHROOM};
 use hyper::Method;
 use polars::prelude::all;
 use tower_http::cors::{Any, CorsLayer};
@@ -26,7 +26,12 @@ async fn main() -> Result<(),BackendError> {
         MUSHROOM
             .to_owned()
             .select([all().shrink_dtype()])
-            .collect()?
+            .collect()?,
+
+                    // Lazy initialization of json data
+
+        ALL_FIT_JSON
+            .to_owned()
         )
     );
 

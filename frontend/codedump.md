@@ -673,3 +673,22 @@ pub enum SliderStepMethod {
 
 
 ```
+
+
+```git
+
+cp -a .git .git-backup
+
+
+find . -type f -empty -delete -print
+
+
+git fsck --full
+
+
+git fetch -p
+
+
+git status
+
+```

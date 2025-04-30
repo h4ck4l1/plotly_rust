@@ -7,6 +7,8 @@ use serde_json::Value;
 use web_sys::js_sys::Math;
 use crate::{mushroom::callback, CubeSpinner, Route, CUSTOM_LAYOUT};
 
+use super::{get_histogram, MushroomData};
+
 #[component]
 pub fn MushroomFirstCategoricalColumn() -> Element {
     let div_id = use_signal(|| "mushroom-plot");
@@ -32,16 +34,11 @@ async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
         .get("http://localhost:3000/mushroom_first_cat_col")
         .send()
         .await?
-        .json::<Vec<i16>>()
+        .json::<MushroomData>()
         .await?;
 
 
-    let mut plot = Plot::new();
-
-    plot.add_trace(
-        Histogram::new(x)
-            
-    );
+    let plot = get_histogram(MushroomData::default(), 0f32).await?;
 
     Ok(Plot::default())
 }

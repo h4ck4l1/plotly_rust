@@ -43,6 +43,8 @@ pub fn App() -> Element {
             document::Meta {name: "viewport", content: "width=device-width, initial-scale=1.0"}
             document::Stylesheet {href: MAIN_CSS}
             document::Script {src: "https://cdn.plot.ly/plotly-3.0.1.min.js"}
+            document::Script {src: "https://cdn.jsdelivr.net/npm/flatpickr"}
+            document::Script {src: "https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"}
         }
         Router::<Route>{}
     }    

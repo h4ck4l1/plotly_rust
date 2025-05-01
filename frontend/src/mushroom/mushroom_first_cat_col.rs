@@ -12,20 +12,20 @@ use super::get_histogram;
 #[component]
 pub fn MushroomFirstCategoricalColumn() -> Element {
     let div_id = use_signal(|| "mushroom-plot");
+    let mut is_hidden = use_signal(|| true);
     let mut error_response = use_signal(|| "".to_string());
-    // let is_hidden = use_signal(|| true);
 
     use_effect(move || {
-        // let mut is_hidden = is_hidden.clone();
+        let mut is_hidden = is_hidden.clone();
         spawn(async move {
-            match mushroom_first_cat_col_data_request().await {
+            match mushroom_first_cat_col_data_request(1200,550).await {
                 Ok(plot) => {
-                    // is_hidden.set(false);
-                    async_std::task::sleep(Duration::from_secs(500)).await;
+                    is_hidden.set(false);
+                    async_std::task::sleep(Duration::from_millis(500)).await;
                     let _ = plotly::bindings::new_plot(div_id(), &plot).await;
                 },
                 Err(err) => {
-                    // is_hidden.set(true);
+                    is_hidden.set(true);
                     error_response.set(err.to_string());
                 }
             }
@@ -34,13 +34,24 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
 
     rsx!{
         div {  
-            h1 {  
-                "Mushroom First Animated Plot"
+            h1 {
+                color: "cyan", 
+                "Mushroom Cap Diameter Plot"
             }
         }
-        div {  
-            id: "{div_id()}"
-        }
+        div {
+            class: "graph-container",  
+            div {
+                class: "graph-class",
+                display: if is_hidden() {"inline-block"} else {"none"},
+                CubeSpinner {  }
+            }
+            div {
+                class: "graph-class",
+                display: if is_hidden() {"none"} else {"inline-block"} ,
+                id: "{div_id()}"
+            }
+        }     
         div {  
             "{error_response()}"
         }
@@ -56,7 +67,7 @@ pub fn MushroomCatColComponent() -> Element {
 }
 
 
-async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
+async fn mushroom_first_cat_col_data_request(width: usize, height: usize) -> Result<Plot,anyhow::Error> {
     
     let full_data = reqwest::Client::new()
         .get("http://localhost:3000/mushroom_cap_diameter")
@@ -64,12 +75,18 @@ async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
         .await?
         .json::<Value>()
         .await?;
-
-    let col_data = &full_data["cap_diameter"];
+    let col_name = "cap_diameter";
+    let col_data = &full_data[col_name];
     let fit_data = &full_data["cap_dia_json"];
     let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
-    let fit_data = serde_json::from_value(fit_data.to_owned())?;
-    let mut plot = get_histogram(col_data, fit_data, "cap_diameter", 0f32).await?;
-    plot.show_image(plotly::ImageFormat::JPEG, 1000, 1000);
+    let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
+    let plot = get_histogram(
+        col_data, 
+        fit_data, 
+        "cap_diameter", 
+        0f32,
+        width,
+        height
+    ).await?;
     Ok(plot)
 }

@@ -156,3 +156,15 @@ body {
     transform: rotateY(-90deg) translateZ(120px);
     }
 }
+
+.graph-container {
+    align-items: center;
+    justify-content: center;
+}
+
+.graph-class {
+    border: 2px solid cyan;
+    position: relative;
+    height: 80vh;
+    width: 90vw;
+}

@@ -5,9 +5,12 @@ use plotly::{ common::{color::Rgb, Font, Marker, Mode, Pad}, layout::{themes::PL
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use web_sys::js_sys::Math;
-use crate::{mushroom::callback, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT, MUSHROOM_FIRST_CAT_COL_MARKDOWN};
-
+use crate::{mushroom::callback, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT};
 use super::get_histogram;
+
+const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom_markdowns/mushroom_first_cat_col_markdown.md");
+
+static MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
 
 #[component]
 pub fn MushroomFirstCategoricalColumn() -> Element {
@@ -37,10 +40,19 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
     
 
     rsx!{
-        div {  
+        div {
+            class: "heading-container", 
             h1 {
+                class: "heading",
                 color: "cyan", 
                 "Mushroom Cap Diameter Plot"
+            }
+        }
+        div {
+            class: "asset-image-container",  
+            img {
+                class:"asset-image",
+                src: MUSHROOM_CAP_DIA_IMAGE
             }
         }
         if is_hidden() {

@@ -7,5 +7,3 @@
 - These variations highlight the diversity in cap sizes among mushroom species, which can be influenced by environmental factors and genetic variations.
 
 **_Click on the distribution name to see the fit associated with it._**
-
-![cap_dia_img](/assets/cap_diameter.png)

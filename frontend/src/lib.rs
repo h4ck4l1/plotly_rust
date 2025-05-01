@@ -20,7 +20,6 @@ use mushroom::{
 
 static MAIN_CSS: Asset = asset!("assets/main.css");
 static TAILWIND_CSS: Asset = asset!("assets/tailwind.css");
-pub const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom/mushroom_first_cat_col_markdown.md");
 
 pub const CUSTOM_LAYOUT: LazyCell<Layout> = LazyCell::new(|| {
     Layout::new()

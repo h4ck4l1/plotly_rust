@@ -174,3 +174,99 @@ body {
 .cube-spinner {
     position: relative;
 }
+
+.asset-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.asset-image {
+    border: 3px solid cyan;
+    margin: 10px;
+    height: 300px;
+    width: 300px;
+    border-radius: 15px;
+}
+
+.heading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: #0D76BF;
+}
+
+.heading {
+    position: relative;
+    text-decoration: underline;
+}
+
+  
+@keyframes box {
+    from {
+    height: 0;
+    }
+    to {
+    height: var(--dropdown-box-maxheight);
+    }
+}
+  
+@keyframes ripple {
+    0% {
+    box-shadow: 0 0 0 0 var(--ripple-colorcode),
+                0 0 0 20px var(--ripple-colorcode),
+                0 0 0 40px var(--ripple-colorcode),
+                0 0 0 60px var(--ripple-colorcode);
+    }
+    100% {
+    box-shadow: 0 0 0 20px var(--ripple-colorcode),
+                0 0 0 40px var(--ripple-colorcode),
+                0 0 0 60px var(--ripple-colorcode),
+                0 0 0 80px rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes hoverripple {
+    0% {
+    box-shadow: 0 0 0 0 var(--hover-ripple-colorcode),
+                0 0 0 20px var(--hover-ripple-colorcode),
+                0 0 0 40px var(--hover-ripple-colorcode),
+                0 0 0 60px var(--hover-ripple-colorcode);
+    }
+    100% {
+    box-shadow: 0 0 0 20px var(--hover-ripple-colorcode),
+                0 0 0 40px var(--hover-ripple-colorcode),
+                0 0 0 60px var(--hover-ripple-colorcode),
+                0 0 0 80px rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes optionsripple {
+    0% {
+    box-shadow: 0 0 0 0 var(--drop-hover-ripple-colorcode),
+                0 0 0 8px var(--drop-hover-ripple-colorcode),
+                0 0 0 16px var(--drop-hover-ripple-colorcode),
+                0 0 0 24px var(--drop-hover-ripple-colorcode);
+    }
+    100% {
+    box-shadow: 0 0 0 8px var(--drop-hover-ripple-colorcode),
+                0 0 0 16px var(--drop-hover-ripple-colorcode),
+                0 0 0 24px var(--drop-hover-ripple-colorcode),
+                0 0 0 32px rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes graphripple {
+    0% {
+    box-shadow: 0 0 0 0 var(--ripple-colorcode),
+                0 0 0 6px var(--ripple-colorcode),
+                0 0 0 12px var(--ripple-colorcode),
+                0 0 0 18px var(--ripple-colorcode);
+    }
+    100% {
+    box-shadow: 0 0 0 6px var(--ripple-colorcode),
+                0 0 0 12px var(--ripple-colorcode),
+                0 0 0 18px var(--ripple-colorcode),
+                0 0 0 24px rgba(255, 255, 255, 0);
+    }
+}

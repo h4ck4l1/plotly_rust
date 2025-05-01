@@ -1,7 +1,28 @@
 /* App-wide styling */
+
+:root {
+    --total-background-color: rgb(4, 4, 63);
+    --background-transition-color: rgb(51, 4, 4);
+    --element-background-color: rgb(7, 20, 94);
+    --button-body-color: #393937;
+    --button-accent-color: cyan;
+    --button-box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan;
+    --button-z-fixed: 100;
+    --primary-color: #5E42D7;
+    --secondary-color: #86E3FF;
+    --background: #ec5c5c;
+    --card-bg: #ffbaba;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --hover-color: rgba(255,255,255,0.1);
+}
+
+
 body {
-    background-color: #0f1116;
-    color: #ffffff;
+    background-image: linear-gradient(to bottom, var(--total-background-color), var(--background-transition-color));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: cyan;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 20px;
 }
@@ -13,12 +34,7 @@ body {
     align-items: center;
 }
 
-.homepage-heading {
-    color: cyan;
-}
-
 .cube-spinner-container {
-    border: 2px solid cyan;
     width: 80px;
     display: block;
     margin: 8rem auto;
@@ -165,10 +181,12 @@ body {
 }
 
 .graph-class {
-    border: 2px solid cyan;
+    display: inline-block;
     position: relative;
-    height: 80vh;
+    height: 85vh;
     width: 90vw;
+    border: 2px solid rgba(0, 255, 255, 0.7);
+    animation: graphripple 1.5s ease-in-out infinite;
 }
 
 .cube-spinner {
@@ -201,25 +219,36 @@ body {
     text-decoration: underline;
 }
 
+.general-heading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.general-heading {
+    text-transform: capitalize;
+    text-decoration: underline;
+}
+
   
 @keyframes box {
     from {
-    height: 0;
+        height: 0;
     }
     to {
-    height: var(--dropdown-box-maxheight);
+        height: var(--dropdown-box-maxheight);
     }
 }
   
 @keyframes ripple {
     0% {
-    box-shadow: 0 0 0 0 var(--ripple-colorcode),
+        box-shadow: 0 0 0 0 var(--ripple-colorcode),
                 0 0 0 20px var(--ripple-colorcode),
                 0 0 0 40px var(--ripple-colorcode),
                 0 0 0 60px var(--ripple-colorcode);
     }
     100% {
-    box-shadow: 0 0 0 20px var(--ripple-colorcode),
+        box-shadow: 0 0 0 20px var(--ripple-colorcode),
                 0 0 0 40px var(--ripple-colorcode),
                 0 0 0 60px var(--ripple-colorcode),
                 0 0 0 80px rgba(255, 255, 255, 0);
@@ -228,13 +257,13 @@ body {
 
 @keyframes hoverripple {
     0% {
-    box-shadow: 0 0 0 0 var(--hover-ripple-colorcode),
+        box-shadow: 0 0 0 0 var(--hover-ripple-colorcode),
                 0 0 0 20px var(--hover-ripple-colorcode),
                 0 0 0 40px var(--hover-ripple-colorcode),
                 0 0 0 60px var(--hover-ripple-colorcode);
     }
     100% {
-    box-shadow: 0 0 0 20px var(--hover-ripple-colorcode),
+        box-shadow: 0 0 0 20px var(--hover-ripple-colorcode),
                 0 0 0 40px var(--hover-ripple-colorcode),
                 0 0 0 60px var(--hover-ripple-colorcode),
                 0 0 0 80px rgba(255, 255, 255, 0);
@@ -243,13 +272,13 @@ body {
 
 @keyframes optionsripple {
     0% {
-    box-shadow: 0 0 0 0 var(--drop-hover-ripple-colorcode),
+        box-shadow: 0 0 0 0 var(--drop-hover-ripple-colorcode),
                 0 0 0 8px var(--drop-hover-ripple-colorcode),
                 0 0 0 16px var(--drop-hover-ripple-colorcode),
                 0 0 0 24px var(--drop-hover-ripple-colorcode);
     }
     100% {
-    box-shadow: 0 0 0 8px var(--drop-hover-ripple-colorcode),
+        box-shadow: 0 0 0 8px var(--drop-hover-ripple-colorcode),
                 0 0 0 16px var(--drop-hover-ripple-colorcode),
                 0 0 0 24px var(--drop-hover-ripple-colorcode),
                 0 0 0 32px rgba(255, 255, 255, 0);
@@ -258,15 +287,15 @@ body {
 
 @keyframes graphripple {
     0% {
-    box-shadow: 0 0 0 0 var(--ripple-colorcode),
-                0 0 0 6px var(--ripple-colorcode),
-                0 0 0 12px var(--ripple-colorcode),
-                0 0 0 18px var(--ripple-colorcode);
+        box-shadow: 0 0 0 0 var(--ripple-colorcode),
+                    0 0 0 6px var(--ripple-colorcode),
+                    0 0 0 12px var(--ripple-colorcode),
+                    0 0 0 18px var(--ripple-colorcode);
     }
     100% {
-    box-shadow: 0 0 0 6px var(--ripple-colorcode),
-                0 0 0 12px var(--ripple-colorcode),
-                0 0 0 18px var(--ripple-colorcode),
-                0 0 0 24px rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 6px var(--ripple-colorcode),
+                    0 0 0 12px var(--ripple-colorcode),
+                    0 0 0 18px var(--ripple-colorcode),
+                    0 0 0 24px rgba(255, 255, 255, 0);
     }
 }

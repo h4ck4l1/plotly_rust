@@ -72,6 +72,13 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
         div {  
             "{error_response()}"
         }
+        div {
+            class: "general-heading-container",
+            h1 {  
+                class: "general-heading",
+                "mushroom cap diameter observations"
+            }
+        }
         MarkdownComponent { text: MUSHROOM_FIRST_CAT_COL_MARKDOWN }
     }
 }

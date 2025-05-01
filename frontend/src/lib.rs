@@ -3,22 +3,24 @@
 pub mod mushroom;
 
 use std::{borrow::Cow, cell::LazyCell};
-
 use dioxus::document;
 use dioxus::prelude::*;
 use gloo::utils::format::JsValueSerdeExt;
+use pulldown_cmark::{Options, Parser};
 use serde::{Deserialize, Serialize};
 use tracing::Value;
 use wasm_bindgen::{convert::{FromWasmAbi, OptionFromWasmAbi}, describe::WasmDescribe};
 use wasm_bindgen::convert::{IntoWasmAbi, WasmAbi};
 use wasm_bindgen::prelude::*;
 use plotly::{common::Font, layout::{Axis, Template, themes::PLOTLY_DARK}, Layout, Plot, Scatter};
+use dioxus_markdown::Markdown;
 use mushroom::{
     mushroom_first_cat_col::MushroomFirstCategoricalColumn
 };
 
 static MAIN_CSS: Asset = asset!("assets/main.css");
 static TAILWIND_CSS: Asset = asset!("assets/tailwind.css");
+pub const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom/mushroom_first_cat_col_markdown.md");
 
 pub const CUSTOM_LAYOUT: LazyCell<Layout> = LazyCell::new(|| {
     Layout::new()
@@ -44,6 +46,7 @@ pub fn App() -> Element {
             document::Stylesheet {href: MAIN_CSS}
             document::Script {src: "https://cdn.plot.ly/plotly-3.0.1.min.js"}
             document::Script {src: "https://cdn.jsdelivr.net/npm/flatpickr"}
+            document::Script {src: "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"}
             // document::Script {src: "https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"}
         }
         Router::<Route>{}
@@ -78,32 +81,47 @@ pub fn CubeSpinner() -> Element {
 
     rsx!{
         div {
-            div {
-                class: "cube-spinner-container",
+            class: "cube-spinner-container",
+            div {  
+                class: "cube-spinner-cube-container"
+            }
+            div {  
+                class: "cube-spinner-cube",
                 div {  
-                    class: "cube-spinner-cube-container"
+                    class: "cube-spinner-cube-side cube-spinner-cube-side--front"
                 }
                 div {  
-                    class: "cube-spinner-cube",
-                    div {  
-                        class: "cube-spinner-cube-side cube-spinner-cube-side--front"
-                    }
-                    div {  
-                        class: "cube-spinner-cube-side cube-spinner-cube-side--back"
-                    }
-                    div {  
-                        class: "cube-spinner-cube-side cube-spinner-cube-side--right"
-                    }
-                    div {  
-                        class: "cube-spinner-cube-side cube-spinner-cube-side--left"
-                    }
-                    div {  
-                        class: "cube-spinner-cube-side cube-spinner-cube-side--top"
-                    }
-                    div {  
-                        class: "cube-spinner-cube-side cube-spinner-cube-side--bottom"
-                    }
+                    class: "cube-spinner-cube-side cube-spinner-cube-side--back"
                 }
+                div {  
+                    class: "cube-spinner-cube-side cube-spinner-cube-side--right"
+                }
+                div {  
+                    class: "cube-spinner-cube-side cube-spinner-cube-side--left"
+                }
+                div {  
+                    class: "cube-spinner-cube-side cube-spinner-cube-side--top"
+                }
+                div {  
+                    class: "cube-spinner-cube-side cube-spinner-cube-side--bottom"
+                }
+            }
+        }
+    }
+}
+
+
+
+
+#[component]
+pub fn MarkdownComponent(text: ReadOnlySignal<&'static str>) -> Element {
+
+
+    rsx!{
+        div {  
+            class: "container is-fluid",
+            Markdown {
+                src: text()
             }
         }
     }

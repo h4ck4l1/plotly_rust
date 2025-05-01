@@ -5,32 +5,36 @@ use plotly::{ common::{color::Rgb, Font, Marker, Mode, Pad}, layout::{themes::PL
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use web_sys::js_sys::Math;
-use crate::{mushroom::callback, CubeSpinner, Route, CUSTOM_LAYOUT};
+use crate::{mushroom::callback, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT, MUSHROOM_FIRST_CAT_COL_MARKDOWN};
 
 use super::get_histogram;
 
 #[component]
 pub fn MushroomFirstCategoricalColumn() -> Element {
-    let div_id = use_signal(|| "mushroom-plot");
     let mut is_hidden = use_signal(|| true);
+    let div_id = use_signal(|| "mushroom-plot");
     let mut error_response = use_signal(|| "".to_string());
+
 
     use_effect(move || {
         let mut is_hidden = is_hidden.clone();
         spawn(async move {
-            match mushroom_first_cat_col_data_request(1200,550).await {
+            match mushroom_first_cat_col_data_request().await {
                 Ok(plot) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(500)).await;
-                    let _ = plotly::bindings::new_plot(div_id(), &plot).await;
+                    if !is_hidden() {
+                        let _ = plotly::bindings::new_plot(div_id(), &plot).await;
+                    }
                 },
                 Err(err) => {
-                    is_hidden.set(true);
                     error_response.set(err.to_string());
                 }
             }
         });
     });
+
+    
 
     rsx!{
         div {  
@@ -39,35 +43,29 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
                 "Mushroom Cap Diameter Plot"
             }
         }
-        div {
-            class: "graph-container",  
+        if is_hidden() {
             div {
-                class: "graph-class",
-                display: if is_hidden() {"inline-block"} else {"none"},
+                class: "cube-spinner",
                 CubeSpinner {  }
             }
-            div {
-                class: "graph-class",
-                display: if is_hidden() {"none"} else {"inline-block"} ,
-                id: "{div_id()}"
+        } else {
+            div {  
+                class: "graph-container",
+                div {  
+                    id: "{div_id()}",
+                    class: "graph-class"
+                }
             }
-        }     
+        }
         div {  
             "{error_response()}"
         }
+        MarkdownComponent { text: MUSHROOM_FIRST_CAT_COL_MARKDOWN }
     }
 }
 
 
-#[component]
-pub fn MushroomCatColComponent() -> Element {
-    rsx!{
-
-    }
-}
-
-
-async fn mushroom_first_cat_col_data_request(width: usize, height: usize) -> Result<Plot,anyhow::Error> {
+async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
     
     let full_data = reqwest::Client::new()
         .get("http://localhost:3000/mushroom_cap_diameter")
@@ -84,9 +82,7 @@ async fn mushroom_first_cat_col_data_request(width: usize, height: usize) -> Res
         col_data, 
         fit_data, 
         "cap_diameter", 
-        0f32,
-        width,
-        height
+        0f32
     ).await?;
     Ok(plot)
 }

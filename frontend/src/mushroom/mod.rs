@@ -14,9 +14,7 @@ pub async fn get_histogram(
     col_data: Vec<f32>,
     fit_data: Value,
     col_name: &str,
-    bar_gap: f32,
-    width: usize,
-    height: usize
+    bar_gap: f32
 ) -> Result<Plot,anyhow::Error> {
     
     let x = &fit_data["x"];
@@ -38,8 +36,6 @@ pub async fn get_histogram(
     plot.set_layout(
         CUSTOM_LAYOUT.clone()
             .bar_gap(0f64)
-            .height(height)
-            .width(width)
     );
     for name in names {
         let y = serde_json::from_value::<Vec<f32>>((&fit_data[&name]["y"]).to_owned())?

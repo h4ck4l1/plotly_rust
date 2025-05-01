@@ -18,6 +18,7 @@ body {
 }
 
 .cube-spinner-container {
+    border: 2px solid cyan;
     width: 80px;
     display: block;
     margin: 8rem auto;
@@ -158,8 +159,9 @@ body {
 }
 
 .graph-container {
-    align-items: center;
+    display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .graph-class {
@@ -167,4 +169,8 @@ body {
     position: relative;
     height: 80vh;
     width: 90vw;
+}
+
+.cube-spinner {
+    position: relative;
 }

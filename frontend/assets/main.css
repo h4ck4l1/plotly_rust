@@ -112,65 +112,65 @@ body {
         transform: rotateX(-90deg) translateZ(40px);
     }
     30% {
-    transform: rotateX(-90deg) translateZ(120px);
+        transform: rotateX(-90deg) translateZ(120px);
     }
     80% {
-    transform: rotateX(-90deg) translateZ(120px);
+        transform: rotateX(-90deg) translateZ(120px);
     }
 }
 @keyframes blowout-front {
     20% {
-    transform: rotateY(0deg) translateZ(40px);
+        transform: rotateY(0deg) translateZ(40px);
     }
     30% {
-    transform: rotateY(0deg) translateZ(120px);
+        transform: rotateY(0deg) translateZ(120px);
     }
     80% {
-    transform: rotateY(0deg) translateZ(120px);
+        transform: rotateY(0deg) translateZ(120px);
     }
 }
 @keyframes blowout-top {
     20% {
-    transform: rotateX(90deg) translateZ(40px);
+        transform: rotateX(90deg) translateZ(40px);
     }
     30% {
-    transform: rotateX(90deg) translateZ(120px);
+        transform: rotateX(90deg) translateZ(120px);
     }
     80% {
-    transform: rotateX(90deg) translateZ(120px);
+        transform: rotateX(90deg) translateZ(120px);
     }
 }
 @keyframes blowout-back {
     20% {
-    transform: rotateX(180deg) translateZ(40px);
+        transform: rotateX(180deg) translateZ(40px);
     }
     30% {
-    transform: rotateX(180deg) translateZ(120px);
+        transform: rotateX(180deg) translateZ(120px);
     }
     80% {
-    transform: rotateX(180deg) translateZ(120px);
+        transform: rotateX(180deg) translateZ(120px);
     }
 }
 @keyframes blowout-right {
     20% {
-    transform: rotateY(90deg) translateZ(40px);
+        transform: rotateY(90deg) translateZ(40px);
     }
     30% {
-    transform: rotateY(90deg) translateZ(120px);
+        transform: rotateY(90deg) translateZ(120px);
     }
     80% {
-    transform: rotateY(90deg) translateZ(120px);
+        transform: rotateY(90deg) translateZ(120px);
     }
 }
 @keyframes blowout-left {
     20% {
-    transform: rotateY(-90deg) translateZ(40px);
+        transform: rotateY(-90deg) translateZ(40px);
     }
     30% {
-    transform: rotateY(-90deg) translateZ(120px);
+        transform: rotateY(-90deg) translateZ(120px);
     }
     80% {
-    transform: rotateY(-90deg) translateZ(120px);
+        transform: rotateY(-90deg) translateZ(120px);
     }
 }
 
@@ -201,7 +201,7 @@ body {
 
 .asset-image {
     border: 3px solid cyan;
-    margin: 10px;
+    margin: 50px;
     height: 300px;
     width: 300px;
     border-radius: 15px;

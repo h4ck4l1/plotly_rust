@@ -1,6 +1,8 @@
 #![allow(unused,non_snake_case)]
 
 pub mod mushroom;
+pub mod plotly_callback;
+pub mod table_callback;
 
 use std::{borrow::Cow, cell::LazyCell};
 use dioxus::document;
@@ -46,7 +48,9 @@ pub fn App() -> Element {
             document::Script {src: "https://cdn.plot.ly/plotly-3.0.1.min.js"}
             document::Script {src: "https://cdn.jsdelivr.net/npm/flatpickr"}
             document::Script {src: "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"}
-            // document::Script {src: "https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"}
+            document::Script {src: "https://cdn.datatables.net/2.3.0/js/dataTables.js"}
+            document::Script {src: "https://code.jquery.com/jquery-3.7.1.js"}
+            document::Stylesheet{href: "https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css"}
         }
         Router::<Route>{}
     }    

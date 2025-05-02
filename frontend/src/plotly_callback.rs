@@ -1,5 +1,4 @@
 use std::time::Duration;
-
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 use plotly::{plot::Traces, Plot};

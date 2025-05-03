@@ -2,7 +2,9 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 use plotly::{plot::Traces, Plot};
+use wasm_bindgen_futures::JsFuture;
 use web_sys::{js_sys::{self, Function, Object}, window, HtmlElement};
+use crate::table_callback::load_script;
 
 
 #[wasm_bindgen]
@@ -11,8 +13,22 @@ extern "C" {
     #[wasm_bindgen(extends= HtmlElement, js_name=HTMLElement)]
     type PlotlyDiv;
 
+    #[wasm_bindgen(catch,js_namespace=Plotly,js_name=newPlot)]
+    async fn new_plot_(div_id: &str, obj: &Object) -> Result<JsValue,JsValue>;
+
     #[wasm_bindgen(method,structural,js_name=on)]
     fn on(this: &PlotlyDiv, event: &str, cb: &Function);
+
+}
+
+pub async fn new_plot(div_id: &str, plot: &Plot) {
+
+    let plot = plot.to_js_object();
+
+    JsFuture::from(load_script("https://cdn.plot.ly/plotly-3.0.1.min.js")).await
+        .expect("Unable to load plotly script");
+
+    new_plot_(div_id, &plot).await.expect("Unable to new_ plot_");
 
 }
 

@@ -5,10 +5,11 @@ use itertools::Itertools;
 use plotly::{ common::{color::Rgb, Font, Marker, Mode, Pad}, layout::{themes::PLOTLY_DARK, update_menu::{Button, UpdateMenu}, Axis}, plot::Traces, Histogram, Layout, Plot, Scatter};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use web_sys::js_sys::Math;
-use crate::{table_callback::new_table, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT};
-use super::get_histogram;
+use wasm_bindgen::{prelude::Closure, JsCast};
+use web_sys::{js_sys::Math, window, HtmlHeadElement, HtmlScriptElement};
+use crate::{plotly_callback, table_callback::new_table, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT};
 
+use super::get_histogram;
 const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom_markdowns/mushroom_first_cat_col_markdown.md");
 
 static MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
@@ -16,26 +17,28 @@ static MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_
 #[component]
 pub fn MushroomFirstCategoricalColumn() -> Element {
     let mut is_hidden = use_signal(|| true);
-    let div_id = use_signal(|| "mushroom-plot");
+    let mut is_plot_mounted = use_signal(|| false);
+    let mut is_loaded = use_signal(|| false);
+    let plot_div_id = use_signal(|| "mushroom-plot");
     let table_div_id = use_signal(|| "mushroom-cap-dia-table");
     let mut error_response = use_signal(|| "".to_string());
     let mut scale_value = use_motion(1f32);
     let table_rows = use_signal(|| vec![
-        ("Sohail","Uddin",25),
-        ("Shafi","Uddin",22),
-        ("Akhtar", "Parveen",21)
+        ("Frist_Name_1","Second_Name_1",25),
+        ("First_Name_2","Second_Name_2",22),
+        ("First_Name_3", "Second_Name_3",21)
     ]);
-
 
     use_effect(move || {
         let mut is_hidden = is_hidden.clone();
+        let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
             match mushroom_first_cat_col_data_request().await {
                 Ok(plot) => {
                     is_hidden.set(false);
-                    async_std::task::sleep(Duration::from_millis(500)).await;
-                    if !is_hidden() {
-                        let _ = plotly::bindings::new_plot(div_id(), &plot).await;
+                    async_std::task::sleep(Duration::from_millis(50)).await;
+                    if !is_hidden() & is_plot_mounted() {
+                        let _ = plotly_callback::new_plot(plot_div_id(), &plot).await;
                     }
                 },
                 Err(err) => {
@@ -45,10 +48,17 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
         });
     });
 
-    let table_mount = move |_| {
-        new_table(table_div_id())
-    };
-
+    use_effect(move || {
+        let mut is_loaded = is_loaded.clone();
+        spawn(async move {
+            is_loaded.set(true);
+            // async_std::task::sleep(Duration::from_millis(50)).await;
+            if is_loaded() {
+                let _ = new_table(&table_div_id()).await
+                    .expect("Unable to load table");
+            }
+        });
+    });
 
     let mouse_enter_scaleup = move |_| {
         scale_value.animate_to(1.2, AnimationConfig::new(
@@ -65,7 +75,6 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
             )
         ));
     };
-    
 
     rsx!{
         div {
@@ -92,10 +101,14 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
                 CubeSpinner {  }
             }
         } else {
-            div {  
+            div {
+                onmounted: move |e| {
+                    e.prevent_default();
+                    is_plot_mounted.set(true);
+                },
                 class: "graph-container",
-                div {  
-                    id: "{div_id()}",
+                div {
+                    id: "{plot_div_id()}",
                     class: "graph-class"
                 }
             }
@@ -111,9 +124,12 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
             }
         }
         MarkdownComponent { text: MUSHROOM_FIRST_CAT_COL_MARKDOWN}
-        div {  
+        div {
+            onmounted: move |e| {
+                e.prevent_default();
+                is_loaded.set(true);
+            },
             table {
-                onmounted: table_mount,
                 id: "{table_div_id()}",
                 class: "display",
                 thead {  
@@ -124,8 +140,7 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
                     }
                 }
                 tbody {
-                    id: "table-element",
-                    for (i,(first_name, last_name, age)) in table_rows().iter().enumerate() {
+                    for (first_name, last_name, age) in table_rows().iter() {
                         tr {
                             td { border: "2px solid cyan","{first_name}" }
                             td { border: "2px solid cyan","{last_name}" }
@@ -135,6 +150,7 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
                 }
             }
         }
+        
     }
 }
 

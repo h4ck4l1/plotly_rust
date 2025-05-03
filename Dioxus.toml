@@ -5,6 +5,9 @@
 # HTML title tag content
 title = "plotly_rust"
 
+[web.watcher]
+reload_html = true
+
 # include `assets` in web platform
 [web.resource]
 

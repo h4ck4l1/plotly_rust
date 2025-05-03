@@ -16,6 +16,7 @@ resolver = "2"
 dioxus = { version = "0.6.0", features = ["router"] }
 frontend = {path = "frontend"}
 tracing-wasm = "0.2.1"
+console_error_panic_hook = "0.1.7"
 
 [features]
 default = ["web"]

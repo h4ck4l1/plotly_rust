@@ -2391,11 +2391,13 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-std",
+ "console_error_panic_hook",
  "dioxus",
  "dioxus-markdown",
  "dioxus-motion",
  "gloo",
  "itertools 0.14.0",
+ "js-sys",
  "ndarray",
  "ndarray-stats",
  "plotly",
@@ -5206,6 +5208,7 @@ dependencies = [
 name = "plotly_rust"
 version = "0.1.0"
 dependencies = [
+ "console_error_panic_hook",
  "dioxus",
  "frontend",
  "tracing-wasm",

@@ -1,9 +1,9 @@
 use frontend::App;
-use dioxus::launch;
+use dioxus::{launch, logger::tracing::Level};
 
 
 fn main() {
-    // tracing_wasm::set_as_global_default();
+    dioxus::logger::init(Level::DEBUG).expect("fialed to init logger");
     console_error_panic_hook::set_once();
     launch(App);
 }

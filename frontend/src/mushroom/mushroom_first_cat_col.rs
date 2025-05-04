@@ -1,13 +1,14 @@
-use std::{any::Any, time::Duration};
+use std::{any::Any, format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
 use itertools::Itertools;
 use plotly::{ common::{color::Rgb, Font, Marker, Mode, Pad}, layout::{themes::PLOTLY_DARK, update_menu::{Button, UpdateMenu}, Axis}, plot::Traces, Histogram, Layout, Plot, Scatter};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use tracing::info;
 use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{js_sys::Math, window, HtmlHeadElement, HtmlScriptElement};
-use crate::{plotly_callback, table_callback::new_table, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT};
+use crate::{plotly_callback, table_callback::{new_table, TableData}, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT};
 
 use super::get_histogram;
 const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom_markdowns/mushroom_first_cat_col_markdown.md");
@@ -23,23 +24,21 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
     let table_div_id = use_signal(|| "mushroom-cap-dia-table");
     let mut error_response = use_signal(|| "".to_string());
     let mut scale_value = use_motion(1f32);
-    let table_rows = use_signal(|| vec![
-        ("Frist_Name_1","Second_Name_1",25),
-        ("First_Name_2","Second_Name_2",22),
-        ("First_Name_3", "Second_Name_3",21)
-    ]);
+    let mut table_rows = use_signal(|| Vec::new());
 
     use_effect(move || {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
             match mushroom_first_cat_col_data_request().await {
-                Ok(plot) => {
+                Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
                     if !is_hidden() & is_plot_mounted() {
                         let _ = plotly_callback::new_plot(plot_div_id(), &plot).await;
+                    
                     }
+                    table_rows.set(trows);
                 },
                 Err(err) => {
                     error_response.set(err.to_string());
@@ -50,15 +49,17 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
 
     use_effect(move || {
         let mut is_loaded = is_loaded.clone();
+        let table_rows = table_rows.read().clone();
         spawn(async move {
             is_loaded.set(true);
-            // async_std::task::sleep(Duration::from_millis(50)).await;
+            async_std::task::sleep(Duration::from_millis(50)).await;
             if is_loaded() {
-                let _ = new_table(&table_div_id()).await
-                    .expect("Unable to load table");
+                let _ = new_table(&table_div_id(), table_rows).await;
             }
         });
     });
+
+        
 
     let mouse_enter_scaleup = move |_| {
         scale_value.animate_to(1.2, AnimationConfig::new(
@@ -129,33 +130,15 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
                 e.prevent_default();
                 is_loaded.set(true);
             },
-            table {
-                id: "{table_div_id()}",
-                class: "display",
-                thead {  
-                    tr {  
-                        th { "Name Col" }
-                        th { "Age Col" }
-                        th { "Place Col" }
-                    }
-                }
-                tbody {
-                    for (first_name, last_name, age) in table_rows().iter() {
-                        tr {
-                            td { border: "2px solid cyan","{first_name}" }
-                            td { border: "2px solid cyan","{last_name}" }
-                            td { border: "2px solid cyan","{age}" }
-                        }
-                    }
-                }
-            }
+            id: "{table_div_id()}",
+            position: "relative",
+            left: "30vw"
         }
-        
     }
 }
 
 
-async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
+async fn mushroom_first_cat_col_data_request() -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
     let full_data = reqwest::Client::new()
         .get("http://localhost:3000/mushroom_cap_diameter")
@@ -168,12 +151,11 @@ async fn mushroom_first_cat_col_data_request() -> Result<Plot,anyhow::Error> {
     let fit_data = &full_data["cap_dia_json"];
     let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
     let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
-    let plot = get_histogram(
+    Ok(get_histogram(
         col_data, 
         fit_data, 
         "cap_diameter",
         "Cap Diameter with Best Fit distributions",
         0f32
-    ).await?;
-    Ok(plot)
+    ).await?)
 }

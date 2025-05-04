@@ -1,27 +1,60 @@
-use js_sys::Promise;
+use js_sys::{Object, Promise};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{window, HtmlScriptElement};
+
+use crate::TABULATOR_JS;
+
 #[wasm_bindgen]
 extern "C" {
 
-    #[wasm_bindgen(js_name=DataTable)]
-    type DataTable;
+    #[wasm_bindgen(js_name=Tabulator)]
+    type Tabulator;
 
     #[wasm_bindgen(constructor)]
-    pub fn new_table_(div_id: &str) -> DataTable;
-}
-
-pub async fn new_table(div_id: &str) -> Result<(),JsValue> {
-
-    JsFuture::from(load_script("https://code.jquery.com/jquery-3.7.1.js")).await?;
-    JsFuture::from(load_script("https://cdn.datatables.net/2.3.0/js/dataTables.js")).await?;
-
-    let _ = DataTable::new_table_(&format!("#{}",div_id));
-
-    Ok(())
+    fn new_table_(div_id: &str, obj: &Object) -> Tabulator;
 
 }
+
+
+pub async fn new_table(div_id: &str, data: Vec<TableData>) {
+    let table_options = TableOptions {
+        data,
+        autoColumns: true,
+        layout: "fitDataTable".to_string()
+    };
+
+    let table_obj = Object::from(serde_wasm_bindgen::to_value(&table_options).expect("Cannot be convert to Value"));
+
+    JsFuture::from(load_script(TABULATOR_JS)).await.expect("Cannot load the script");
+
+    Tabulator::new_table_(&format!("#{}",div_id), &table_obj);
+
+}
+
+
+#[derive(Debug,Serialize,Deserialize,Clone)]
+pub struct TableData {
+    #[serde(rename="DistributionName")]
+    distribution_name: String,
+    #[serde(rename="P-Value")]
+    p_value: f32
+}
+
+impl TableData {
+    pub fn new(distribution_name: &String, p_value: f32) -> Self {
+        Self { distribution_name: distribution_name.clone(), p_value }
+    }
+}
+
+#[derive(Debug,Serialize,Deserialize,Clone)]
+struct TableOptions {
+    data: Vec<TableData>,
+    autoColumns: bool,
+    layout: String
+}
+
 
 pub fn load_script(src: &str) -> Promise {
     let doc = window().unwrap().document().unwrap();

@@ -31,6 +31,11 @@ pub const CUSTOM_LAYOUT: LazyCell<Layout> = LazyCell::new(|| {
         .template(&*PLOTLY_DARK)
 });
 
+pub const FLATPICKR_JS: &str = "https://cdn.jsdelivr.net/npm/flatpickr";
+pub const PLOTLY_JS: &str = "https://cdn.plot.ly/plotly-3.0.1.min.js";
+pub const TABULATOR_JS: &str = "https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js";
+pub const TABULATOR_CSS: &str = "https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator_site_dark.css";
+
 #[derive(Debug,Clone,Routable)]
 pub enum Route {
     #[route("/")]
@@ -45,11 +50,10 @@ pub fn App() -> Element {
         head {  
             document::Meta {name: "viewport", content: "width=device-width, initial-scale=1.0"}
             document::Stylesheet {href: MAIN_CSS}
-            document::Stylesheet{href: "https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css"}
-            document::Script {src: "https://cdn.plot.ly/plotly-3.0.1.min.js"}
-            document::Script {src: "https://cdn.jsdelivr.net/npm/flatpickr"}
-            document::Script {src: "https://code.jquery.com/jquery-3.7.1.js"}
-            document::Script {src: "https://cdn.datatables.net/2.3.0/js/dataTables.js"}
+            document::Script {src: FLATPICKR_JS}
+            document::Stylesheet {href: TABULATOR_CSS}
+            document::Script {src: TABULATOR_JS}
+            document::Script {src: PLOTLY_JS}
         }
         Router::<Route>{}
     }    

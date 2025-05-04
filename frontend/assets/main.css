@@ -229,7 +229,6 @@ body {
     text-transform: capitalize;
     text-decoration: underline;
 }
-
   
 @keyframes box {
     from {
@@ -299,3 +298,4 @@ body {
                     0 0 0 24px rgba(255, 255, 255, 0);
     }
 }
+

@@ -2,11 +2,11 @@ use std::collections::HashMap;
 use plotly::{common::{Line, Title}, Histogram, Plot, Scatter};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use tracing::info;
 use web_sys::{console::info, js_sys::Math};
 
-use crate::CUSTOM_LAYOUT;
+use crate::{table_callback::TableData, CUSTOM_LAYOUT};
 pub mod mushroom_first_cat_col;
-
 
 pub async fn get_histogram(
     col_data: Vec<f32>,
@@ -14,10 +14,11 @@ pub async fn get_histogram(
     col_name: &str,
     title_text: &str,
     bar_gap: f32
-) -> Result<Plot,anyhow::Error> {
+) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
     let x = &fit_data["x"];
     let x = serde_json::from_value::<Vec<f32>>(x.to_owned())?;
+    let mut trows = Vec::new();
     let mut names = Vec::new();
     if let Some(cap_dia) = fit_data.as_object() {
         for key in cap_dia.keys() {
@@ -41,11 +42,16 @@ pub async fn get_histogram(
         let y = serde_json::from_value::<Vec<f32>>((&fit_data[&name]["y"]).to_owned())?
             .iter().map(|n| *n * 750000f32)
             .collect::<Vec<f32>>();
+        let p = serde_json::from_value::<f32>((&fit_data[&name]["p"]).to_owned())?;
+        trows.push(TableData::new(&name.replace("_", " ").to_uppercase(), p));
         plot.add_trace(
             Scatter::new(x.clone(), y)
                 .mode(plotly::common::Mode::Lines)
                 .name(&name.to_uppercase().replace("_", " "))
         );
     }
-    Ok(plot)
+    Ok((plot,trows))
 }
+
+
+

@@ -8,15 +8,14 @@ use serde_json::Value;
 use tracing::info;
 use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{js_sys::Math, window, HtmlHeadElement, HtmlScriptElement};
-use crate::{plotly_callback, table_callback::{new_table, TableData}, CubeSpinner, Markdown, MarkdownComponent, Route, CUSTOM_LAYOUT};
+use crate::{misc::{CubeSpinner, MarkdownComponent}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}, Route, CUSTOM_LAYOUT};
 
-use super::get_histogram;
+
 const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom_markdowns/mushroom_first_cat_col_markdown.md");
-
-static MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
+const MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
 
 #[component]
-pub fn MushroomFirstCategoricalColumn() -> Element {
+pub fn MushroomSingleCategoricalColumn(col_name: String) -> Element {
     let mut is_hidden = use_signal(|| true);
     let mut is_plot_mounted = use_signal(|| false);
     let mut is_loaded = use_signal(|| false);
@@ -27,10 +26,11 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
     let mut table_rows = use_signal(|| Vec::new());
 
     use_effect(move || {
+        let col_name = col_name.clone();
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match mushroom_first_cat_col_data_request().await {
+            match mushroom_first_cat_col_data_request(col_name).await {
                 Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -118,9 +118,9 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
             "{error_response()}"
         }
         div {
-            class: "general-heading-container",
+            class: "sub-heading-container",
             h1 {  
-                class: "general-heading",
+                class: "sub-heading",
                 "mushroom cap diameter observations"
             }
         }
@@ -139,23 +139,22 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
 }
 
 
-async fn mushroom_first_cat_col_data_request() -> Result<(Plot,Vec<TableData>),anyhow::Error> {
+async fn mushroom_first_cat_col_data_request(col_name: String) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
     let full_data = reqwest::Client::new()
-        .get("http://localhost:3000/mushroom_cap_diameter")
+        .get(&format!("http://localhost:3000/mushroom_{}",&col_name))
         .send()
         .await?
         .json::<Value>()
         .await?;
-    let col_name = "cap_diameter";
-    let col_data = &full_data[col_name];
+    let col_data = &full_data[&col_name];
     let fit_data = &full_data["cap_dia_json"];
     let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
     let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
     Ok(get_histogram(
         col_data, 
         fit_data, 
-        "cap_diameter",
+        &col_name,
         0f32
     ).await?)
 }

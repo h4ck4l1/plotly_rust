@@ -6,7 +6,9 @@ use tracing::info;
 use web_sys::{console::info, js_sys::Math};
 
 use crate::{table_callback::TableData, CUSTOM_LAYOUT};
-pub mod mushroom_first_cat_col;
+pub mod mushrom_single_cat_col;
+pub mod mushroom_double_cat_col;
+pub mod mushroom_index;
 
 pub async fn get_histogram(
     col_data: Vec<f32>,

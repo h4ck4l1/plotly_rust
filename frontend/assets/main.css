@@ -8,13 +8,49 @@
     --button-accent-color: cyan;
     --button-box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan;
     --button-z-fixed: 100;
-    --primary-color: #5E42D7;
+    --primary-color: cyan;
     --secondary-color: #86E3FF;
     --background: #ec5c5c;
     --card-bg: #ffbaba;
     --text-primary: #333333;
     --text-secondary: #666666;
     --hover-color: rgba(255,255,255,0.1);
+    /* <---------------------- TITLE -------------------------------> */
+    --text-color: #8ee5ff;
+    --dropdown-title-button-color: rgba(255, 0, 0, 0.089);
+    --dropdown-title-button-font-color: cyan;
+    --dropdown-title-hover-color: #4c3bcf;
+    --dropdown-title-image-height: 40px; /* same as width */
+    --dropdown-title-button-border-radius: 10px;
+    --dropdown-button-width: 280px;
+    --dropdown-button-height: 50px;
+    --dropdown-button-font-size: 10px;
+    --dropdown-button-border-size: 1.25px;
+    --dropdown-button-hover-color: #3a007c;
+    --dropdown-button-hover-font-color: #3dc2ec;
+  /* <--------------------- OPTIONS ------------------------------> */
+    --dropdown-options-width: 280px;
+    --dropdown-options-max-height: 150px;
+    --dropdown-options-height: 40px;
+    --dropdown-options-color: #4b70f5;
+    --dropdown-options-hover-color: #4c3bcf;
+    --dropdown-opitons-image-height: 30px; /* same as width */
+    --dropdown-box-background-color: #8b2525;
+    --dropdown-box-border-color: #8a47f7;
+    --dropdown-box-maxheight: 400px;
+    --dropdown-child-border-color: #7db1ff;
+    --dropdown-box-img-border-size: 2px;
+    --dropdown-box-border-size: 2px;
+    --dropdown-box-font-size: 8px;
+    --dropodwn-box-hover-color: #3a007c;
+    --dropdown-box-hover-font-color: #3dc2ec;
+  /* <-----------------------  ANIMATION --------------------------> */
+    --hover-ripple-colorcode: rgba(75, 106, 245, 0.5);
+    --drop-hover-ripple-colorcode: rgba(0, 255, 255, 0.5);
+    --ripple-colorcode: rgb(255,255,255,0.1);
+  /* <------------------------- ARROW ------------------------------> */
+    --arrow-size: 16px;
+    --arrow-color: cyan;
 }
 
 
@@ -207,34 +243,262 @@ body {
     border-radius: 15px;
 }
 
-.heading-container {
+.glass-bg {
+    width: 250px;
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: center;
-    text-shadow: #0D76BF;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.14) 30%, rgba(255,255,255,0.06) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 1px 1px 2px rgba(255,255,255,0.4);
+    overflow: hidden;
+}
+
+.glass-bg .shine {
+    position: absolute;
+    top: -60%;
+    right: 95%;
+    width: 30%;
+    height: 450%;
+    background: rgba(255,255,255,0.3);
+    transform: rotate(30deg);
+    filter: blur(5px);
+    animation: shine 8s infinite linear;
 }
 
 .heading {
-    position: relative;
-    text-decoration: underline;
+    color: cyan;
 }
 
-.general-heading-container {
+.sub-heading-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.general-heading {
+.sub-heading {
     text-transform: capitalize;
     text-decoration: underline;
 }
 
 .table-container {
     display: flex;
+    border: 2px solid cyan;
     justify-content: center;
     align-items: center;
 }
+
+.total-dropdown-container {
+    position: absolute;
+    left: 55%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.total-dropdown ul li {
+    list-style: none;
+}
+  
+  
+  /* <-------------------------------------- TOTAL DROPDOWN DIV ---------------------------------->*/
+  
+.total-dropdown {
+    position: absolute;
+    right: var(--subpage-dropdown-button-width);  /* change the total main dropdown here */
+    top: 0;
+    z-index: 1;
+}
+
+.total-dropdown ul li span {
+    display: inline-flex;
+    align-items: center;
+}
+
+/*<-------------------------------------- DROPDOWN BUTTON ALL -------------------------------->*/
+
+.dropdown-button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: var(--dropdown-title-button-border-radius);
+    font-size: var(--dropdown-button-font-size);
+    height: var(--dropdown-button-height);
+    width: var(--dropdown-button-width);
+}
+
+.dropdown-button span {
+    background-color: var(--dropdown-title-button-color);
+    width: var(--dropdown-button-width);
+    border: var(--dropdown-button-border-size) solid var(--text-color);
+    height: var(--dropdown-button-height);
+    border-radius: var(--dropdown-title-button-border-radius);
+    overflow-y: hidden;
+}
+
+.dropdown-button h1 {
+    position: relative;
+    left: 20px;
+    letter-spacing: 2px;
+    color: var(--dropdown-title-button-font-color);
+}
+
+.dropdown-button img {
+    height: var(--dropdown-title-image-height);
+    width: var(--dropdown-title-image-height);
+    border-radius: 10px;
+    position: relative;
+    left: 50px;
+    animation: ripple 2s ease-in-out infinite;
+}
+
+/* <--------------------------------------- DROPDOWN BOX -------------------------------> */
+
+.dropdown-box {
+    display: none;          /*change this to none when done debugging*/
+    font-size: var(--dropdown-box-font-size);
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: var(--dropdown-box-border-size) solid var(--text-color);          /* var(--text-color) */
+    max-height: var(--dropdown-options-max-height);
+    width: calc(var(--dropdown-options-width) + 5px);
+    border-radius: var(--dropdown-title-button-border-radius);
+}
+
+.dropdown-box img {
+    height: var(--dropdown-opitons-image-height);
+    width: var(--dropdown-opitons-image-height);
+    background-color: white;
+    border: var(--dropdown-box-img-border-size) solid var(--text-color);
+    border-radius: 100%;
+    position: relative;
+    left: 10px;
+}
+
+.dropdown-link {
+    position: relative;
+    left: 80px;
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.dropdown-box li span {
+    background-color: var(--dropdown-title-button-color);
+    overflow-y: hidden;
+    width: var(--dropdown-options-width);
+    height: var(--dropdown-options-height);
+    margin-left: -40px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dropdown-box li:first-child {
+    border-top-left-radius: var(--dropdown-title-button-border-radius);
+    border-top-right-radius: var(--dropdown-title-button-border-radius);
+}
+
+.dropdown-box li:last-child {
+    border-bottom-left-radius: var(--dropdown-title-button-border-radius);
+    border-bottom-right-radius: var(--dropdown-title-button-border-radius);
+}
+
+/* <------------------------------------- ANIMATIONS ----------------------------------> */
+
+.total-dropdown:hover .dropdown-button span {
+    background-color: var(--dropdown-button-hover-color);
+}
+
+.total-dropdown:hover .dropdown-button h1 {
+    color: var(--dropdown-button-hover-font-color);
+}
+
+.dropdown-box li span:hover {
+    background-color: var(--dropodwn-box-hover-color);
+}
+
+.dropdown-box li span:hover .dropdown-link {
+    color: var(--dropdown-box-hover-font-color);
+}
+
+.dropdown-box li span:hover img {
+    animation: optionsripple 0.3s linear infinite;
+}
+
+.total-dropdown:hover .arrow-space .arrow {
+    display: inline-block;
+}
+
+.total-dropdown:hover .dropdown-box {
+    display: inline-block;
+    animation: box 1s ease forwards;
+}
+
+.dropdown-button:hover + .arrow-space + .dropdown-box,
+.dropdown-button:active + .arrow-space + .dropdown-box ,
+.arrow-space:hover + .dropdown-box,
+.arrow-space:hover + .dropdown-button,
+.dropdown-box:hover {
+    display: inline-block;
+    animation: box 1s ease forwards;
+    animation-iteration-count: 1;
+}
+
+.total-dropdown:hover .dropdown-button img {
+    animation: hoverripple 0.3s linear infinite
+}
+
+/* <----------------------------------  DROPDOWN SCROLLBAR ---------------------------------> */
+
+.dropdown-box::-webkit-scrollbar {
+    width: 5px;
+}
+
+.dropdown-box::-webkit-scrollbar-track {
+    background: var(--dropdown-title-button-color);
+    border-radius: var(--dropdown-title-button-border-radius);
+}
+
+.dropdown-box::-webkit-scrollbar-thumb {
+    background: var(--text-color);
+    border-radius: var(--dropdown-title-button-border-radius);
+}
+
+.dropdown-box::-webkit-scrollbar-thumb:hover {
+    background: var(--text-color);
+    border-top-color: var(--text-color);
+    border-bottom-color: var(--text-color);
+}
+
+/* <--------------------------------------  DROPDOWN ARROW ---------------------------------> */
+
+.arrow-space {
+    width: var(--dropdown-button-width);
+    height: 20px;
+    border-radius: var(--dropdown-title-button-border-radius);
+}
+
+.arrow {
+    display: none;
+    width: 0;
+    height: 0;
+    border-left: var(--arrow-size) solid transparent;
+    border-bottom: var(--arrow-size) solid var(--arrow-color);
+    transform: rotate(-135deg);
+    position: absolute;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+
+  
+
   
 @keyframes box {
     from {
@@ -305,3 +569,31 @@ body {
     }
 }
 
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-150%) rotate(30deg);}
+    25% {transform: translateX(400%) rotate(30deg);}
+    100% {transform: translateX(400%) rotate(30deg);}
+}

@@ -852,21 +852,22 @@ fn load_script(src: &str) -> Promise {
 
 ```
 
+```
 
+The `mushroom.py` file includes a description of the dataset, which mentions that it contains **9 columns**. Here they are:
 
+1. Cap Diameter
+2. Cap Shape
+3. Gill Attachment
+4. Gill Color
+5. Stem Height
+6. Stem Width
+7. Stem Color
+8. Season
+9. Target Class (edible or poisonous)
 
+Let me know if you need further assistance!
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 

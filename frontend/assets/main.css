@@ -229,6 +229,12 @@ body {
     text-transform: capitalize;
     text-decoration: underline;
 }
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
   
 @keyframes box {
     from {

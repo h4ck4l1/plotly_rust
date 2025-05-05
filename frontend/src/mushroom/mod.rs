@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use plotly::{common::{Line, Title}, Histogram, Plot, Scatter};
+use plotly::{common::{Line, Title}, layout::Axis, Histogram, Plot, Scatter};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tracing::info;
@@ -12,10 +12,10 @@ pub async fn get_histogram(
     col_data: Vec<f32>,
     fit_data: Value,
     col_name: &str,
-    title_text: &str,
     bar_gap: f32
 ) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
+
     let x = &fit_data["x"];
     let x = serde_json::from_value::<Vec<f32>>(x.to_owned())?;
     let mut trows = Vec::new();
@@ -27,16 +27,19 @@ pub async fn get_histogram(
             }
         }
     }
+    let col_name = col_name.replace("_", " ").to_uppercase();
     let mut plot = Plot::new();
     plot.add_trace(
         Histogram::new(col_data)
             .auto_bin_x(true)
-            .name(col_name.replace("_", " ").to_uppercase())
+            .name(&col_name)
     );
     plot.set_layout(
         CUSTOM_LAYOUT.clone()
             .bar_gap(0f64)
-            .title(title_text)
+            .title(&format!("{} with Best Fit Distributions",&col_name))
+            .x_axis(Axis::new().title(&format!("{} in cm",&col_name)))
+            .y_axis(Axis::new().title("Counts"))
     );
     for name in names {
         let y = serde_json::from_value::<Vec<f32>>((&fit_data[&name]["y"]).to_owned())?

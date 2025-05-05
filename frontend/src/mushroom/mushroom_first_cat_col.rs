@@ -126,13 +126,14 @@ pub fn MushroomFirstCategoricalColumn() -> Element {
         }
         MarkdownComponent { text: MUSHROOM_FIRST_CAT_COL_MARKDOWN}
         div {
-            onmounted: move |e| {
-                e.prevent_default();
-                is_loaded.set(true);
-            },
-            id: "{table_div_id()}",
-            position: "relative",
-            left: "30vw"
+            class: "table-container",  
+            div {
+                onmounted: move |e| {
+                    e.prevent_default();
+                    is_loaded.set(true);
+                },
+                id: "{table_div_id()}",
+            }
         }
     }
 }
@@ -155,7 +156,6 @@ async fn mushroom_first_cat_col_data_request() -> Result<(Plot,Vec<TableData>),a
         col_data, 
         fit_data, 
         "cap_diameter",
-        "Cap Diameter with Best Fit distributions",
         0f32
     ).await?)
 }

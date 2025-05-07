@@ -2,7 +2,7 @@
 
 use std::sync::Arc;
 use axum::{http::HeaderValue, routing, Router};
-use backend::{mushroom_pages::mushroom_cap_diameter::mushroom_cap_diameter, AppState, BackendError, ALL_FIT_JSON, MUSHROOM};
+use backend::{mushroom_pages::{mushroom_cap_diameter::mushroom_cap_diameter, mushroom_cap_shape::mushroom_cap_shape, mushroom_gill_attachment::mushroom_gill_attachment, mushroom_gill_color::mushroom_gill_color}, AppState, BackendError, ALL_FIT_JSON, MUSHROOM};
 use hyper::Method;
 use polars::prelude::all;
 use tower_http::cors::{Any, CorsLayer};
@@ -37,6 +37,9 @@ async fn main() -> Result<(),BackendError> {
 
     let app = Router::new()
         .route("/mushroom_cap_diameter", routing::get(mushroom_cap_diameter))
+        .route("/mushroom_cap_shape", routing::get(mushroom_cap_shape))
+        .route("/mushroom_gill_attachment", routing::get(mushroom_gill_attachment))
+        .route("/mushroom_gill_color", routing::get(mushroom_gill_color))
         .with_state(app_state)
         .layer(cors_layer);
 

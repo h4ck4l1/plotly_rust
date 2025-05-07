@@ -14,11 +14,11 @@ pub async fn mushroom_cap_diameter(State(app_state): State<Arc<AppState>>) -> Re
         .map(|f| f.unwrap_or(0f32))
         .collect::<Vec<f32>>();
 
-    let cap_dia_json = &ALL_FIT_JSON.clone()[&CAP_DIAMETER.replace("-", "_")];
+    let cap_diameter_json = &ALL_FIT_JSON.clone()[&CAP_DIAMETER.replace("-", "_")];
     Ok(Json(
         serde_json::json!({
             "cap_diameter": cap_diameter,
-            "cap_dia_json": cap_dia_json
+            "cap_diameter_json": cap_diameter_json
         })
     ))
 

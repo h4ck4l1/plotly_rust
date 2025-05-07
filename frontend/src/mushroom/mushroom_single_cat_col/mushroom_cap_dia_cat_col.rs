@@ -4,7 +4,7 @@ use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
 use plotly::Plot;
-use serde_json::Value;
+use serde_json::{Map, Value};
 use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}};
 
 
@@ -132,16 +132,14 @@ async fn mushroom_data_request() -> Result<(Plot,Vec<TableData>),anyhow::Error> 
     
     let col_name = "cap_diameter";
 
-    let full_data = reqwest::Client::new()
+    let mut full_data = reqwest::Client::new()
         .get(&format!("http://localhost:3000/mushroom_{}",&col_name))
         .send()
         .await?
-        .json::<Value>()
+        .json::<Map<String,Value>>()
         .await?;
-    let col_data = &full_data[&col_name];
-    let fit_data = &full_data["cap_dia_json"];
-    let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
-    let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
+    let col_data = serde_json::from_value::<Vec<f32>>(full_data.remove(col_name).unwrap())?;
+    let fit_data = full_data.remove(&format!("{}_json",col_name)).unwrap();
     Ok(get_histogram(
         col_data, 
         fit_data, 

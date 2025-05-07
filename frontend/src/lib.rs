@@ -29,7 +29,7 @@ use home_page::HomePage;
 use mushroom::{
     mushroom_single_cat_col::{
         mushroom_cap_dia_cat_col::MushroomCapDiaCatColumn,
-        mushroom_cap_shape_cat_col::MushroomCapShapeColumn,
+        mushroom_cap_shape_cat_col::MushroomCapShapeCatColumn,
         mushroom_gill_attachment_cat_col::MushroomGillAttachmentColumn,
         mushroom_gill_color_cat_col::MushroomGillColorColumn,
         mushroom_stem_height_cat_col::MushroomStemHeigthColumn,
@@ -102,7 +102,7 @@ pub enum Route {
                     #[route("/cap_diameter")]
                     MushroomCapDiaCatColumn {},
                     #[route("/cap_shape")]
-                    MushroomCapShapeColumn {},
+                    MushroomCapShapeCatColumn {},
                     #[route("/gill_attachment")]
                     MushroomGillAttachmentColumn {},
                     #[route("/gill_color")]

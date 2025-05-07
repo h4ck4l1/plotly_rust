@@ -8,7 +8,7 @@ use serde_json::Value;
 use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}};
 
 
-const MUSHROOM_CAP_DIA_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_first_cat_col_markdown.md");
+const MUSHROOM_CAP_DIA_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_cap_dia_markdown.md");
 const MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
 
 #[component]

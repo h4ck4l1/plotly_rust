@@ -129,7 +129,7 @@ pub fn MushroomDropdownComponent() -> Element {
     let dropdown_options = vec![
         ("INDEX",Route::MushroomIndexPage {  }),
         ("CAP DIAMETER",Route::MushroomCapDiaCatColumn {  }),
-        ("CAP SHAPE",Route::MushroomCapShapeColumn {  }),
+        ("CAP SHAPE",Route::MushroomCapShapeCatColumn {  }),
         ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
         ("GILL COLOR",Route::MushroomGillColorColumn {  }),
         ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
@@ -194,7 +194,7 @@ pub fn CovidDropdownComponent() -> Element {
     let dropdown_options = vec![
         ("INDEX",Route::MushroomIndexPage {  }),
         ("CAP DIAMETER",Route::MushroomCapDiaCatColumn {  }),
-        ("CAP SHAPE",Route::MushroomCapShapeColumn {  }),
+        ("CAP SHAPE",Route::MushroomCapShapeCatColumn {  }),
         ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
         ("GILL COLOR",Route::MushroomGillColorColumn {  }),
         ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
@@ -259,7 +259,7 @@ pub fn KfcStockDropdownComponent() -> Element {
     let dropdown_options = vec![
         ("INDEX",Route::MushroomIndexPage {  }),
         ("CAP DIAMETER",Route::MushroomCapDiaCatColumn {  }),
-        ("CAP SHAPE",Route::MushroomCapShapeColumn {  }),
+        ("CAP SHAPE",Route::MushroomCapShapeCatColumn {  }),
         ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
         ("GILL COLOR",Route::MushroomGillColorColumn {  }),
         ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),

@@ -47,7 +47,7 @@
   /* <-----------------------  ANIMATION --------------------------> */
     --hover-ripple-colorcode: rgba(75, 106, 245, 0.5);
     --drop-hover-ripple-colorcode: rgba(0, 255, 255, 0.5);
-    --ripple-colorcode: rgb(255,255,255,0.1);
+    --ripple-colorcode: rgba(15, 241, 241, 0.1);
   /* <------------------------- ARROW ------------------------------> */
     --arrow-size: 16px;
     --arrow-color: cyan;
@@ -136,6 +136,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 10vh;
 }
 
 .graph-class {
@@ -155,6 +157,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 12vh;
 }
 
 .asset-image {
@@ -223,9 +227,10 @@ body {
 
 .table-container {
     display: flex;
-    border: 2px solid cyan;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 15vh;
 }
 
 .total-dropdown-container {

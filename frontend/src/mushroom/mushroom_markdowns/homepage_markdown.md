@@ -9,9 +9,9 @@
 ➼ Machine Learning was implemented for relevant datasets.
 
 ➼ Classifications and Regression Observations were carried out for 
- - Mushroom, 
- - Time Series analysis for kfc-stock, and 
- - Classification with geo location for covid-19.
+ - Mushroomn Classification
+ - Time Series analysis for kfc-stock
+ - Covid-19 effects on different states on India
 
 ➼ Different ML algorithms were used ranging from simple Linear Regression to complex Gradient Boosting bagging algorithms and Neural Nets.
 
@@ -21,11 +21,11 @@
 ## Steps Followed
 
 ### Data Collection
-#### ⬇
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇
 ### Data Preprocessing
-#### ⬇
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇
 ### Model Training
-#### ⬇
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇
 ### Model Evaluation
-#### ⬇
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇
 ### Results Interpretation

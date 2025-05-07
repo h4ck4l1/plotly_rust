@@ -5,5 +5,3 @@
 - The cap diameter of mushrooms can vary significantly across different species. For instance, the common mushroom (Agaricus bisporus) typically has a cap diameter of 5-10 cm, while the Fly Agaric (Amanita muscaria) can range from 8-20 cm. On the larger end of the spectrum, the Giant Puffball (Calvatia gigantea) can exceed 50 cm in diameter.
 
 - These variations highlight the diversity in cap sizes among mushroom species, which can be influenced by environmental factors and genetic variations.
-
-**_Click on the distribution name to see the fit associated with it._**

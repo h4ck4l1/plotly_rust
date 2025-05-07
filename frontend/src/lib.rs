@@ -12,7 +12,7 @@ use std::{borrow::Cow, cell::LazyCell};
 use dioxus::document;
 use dioxus::prelude::*;
 use gloo::utils::format::JsValueSerdeExt;
-use misc::DropdownComponent;
+use misc::{CovidDropdownComponent, DropdownComponent, KfcStockDropdownComponent, MushroomDropdownComponent};
 use pulldown_cmark::{Options, Parser};
 use serde::{Deserialize, Serialize};
 use tracing::Value;
@@ -27,7 +27,14 @@ use home_page::HomePage;
 
 
 use mushroom::{
-    mushrom_single_cat_col::MushroomSingleCategoricalColumn,
+    mushroom_single_cat_col::{
+        mushroom_cap_dia_cat_col::MushroomCapDiaCatColumn,
+        mushroom_cap_shape_cat_col::MushroomCapShapeColumn,
+        mushroom_gill_attachment_cat_col::MushroomGillAttachmentColumn,
+        mushroom_gill_color_cat_col::MushroomGillColorColumn,
+        mushroom_stem_height_cat_col::MushroomStemHeigthColumn,
+        mushroom_stem_width_cat_col::MushroomStemWidthColumn
+    },
     mushroom_double_cat_col::MushroomDoubleCategoricalColumn,
     mushroom_index::MushroomIndexPage
 };
@@ -73,6 +80,12 @@ pub const TABULATOR_JS: &str = "https://unpkg.com/tabulator-tables@6.3.1/dist/js
 pub const TABULATOR_CSS: &str = "https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator_site_dark.css";
 
 
+// const DIV's
+
+pub const SMALL_GAP: &str = "small-gap";
+pub const MEDIUM_GAP: &str = "medium-gap";
+pub const LARGE_GAP: &str = "large-gap";
+
 
 
 #[derive(Debug,Clone,Routable)]
@@ -83,29 +96,44 @@ pub enum Route {
     #[layout(DropdownComponent)]
         #[route("/")]
         HomePage {},
-        #[nest("/mushroom")]
-
-            #[route("/single_variable/:col_name")]
-            MushroomSingleCategoricalColumn {col_name: String},
-            #[route("/double_variable/double?:first_col&:second_col")]
-            MushroomDoubleCategoricalColumn {first_col: String, second_col: String},
-
+        #[layout(MushroomDropdownComponent)]
+            #[nest("/mushroom")]
+                #[nest("/single_variable")]
+                    #[route("/cap_diameter")]
+                    MushroomCapDiaCatColumn {},
+                    #[route("/cap_shape")]
+                    MushroomCapShapeColumn {},
+                    #[route("/gill_attachment")]
+                    MushroomGillAttachmentColumn {},
+                    #[route("/gill_color")]
+                    MushroomGillColorColumn {},
+                    #[route("/stem_heigth")]
+                    MushroomStemHeigthColumn {},
+                    #[route("/stem_width")]
+                    MushroomStemWidthColumn {},
+                #[end_nest]
+                #[nest("/double_variable")]
+                    #[route("/double?:first_col&:second_col")]
+                    MushroomDoubleCategoricalColumn {first_col: String, second_col: String},
+                #[end_nest]
             #[route("/", MushroomIndexPage)]
             MushroomIndexPage {},
-
-        #[end_nest]
-        #[nest("/covid")]
+            #[end_nest]
+        #[end_layout]
+        #[layout(CovidDropdownComponent)]
+            #[nest("/covid")]
 
             #[route("/",CovidIndexPage)]
             CovidIndexPage {},
-
-        #[end_nest]
-        #[nest("/kfc_stock")]
+            #[end_nest]
+        #[end_layout]
+        #[layout(KfcStockDropdownComponent)]
+            #[nest("/kfc_stock")]
 
             #[route("/",KfcIndexPage)]
             KfcIndexPage {},
-
-        #[end_nest]
+            #[end_nest]
+        #[end_layout]
     #[end_layout]
     #[route("/..all_matches")]
     NotFound {all_matches: Vec<String>}

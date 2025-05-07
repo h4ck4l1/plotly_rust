@@ -30,8 +30,8 @@
     --dropdown-button-hover-font-color: #3dc2ec;
   /* <--------------------- OPTIONS ------------------------------> */
     --dropdown-options-width: 280px;
-    --dropdown-options-max-height: 150px;
-    --dropdown-options-height: 40px;
+    --dropdown-options-max-height: 250px;
+    --dropdown-options-height: 60px;
     --dropdown-options-color: #4b70f5;
     --dropdown-options-hover-color: #4c3bcf;
     --dropdown-opitons-image-height: 30px; /* same as width */
@@ -131,84 +131,6 @@ body {
     animation: blowout-bottom 4s infinite;
 }
 
-@keyframes rotate {
-    0% {
-        transform: rotateX(0deg) rotateY(0deg);
-    }
-    20% {
-        transform: rotateX(320deg) rotateY(320deg);
-    }
-    100% {
-        transform: rotateX(360deg) rotateY(360deg);
-    }
-}
-
-@keyframes blowout-bottom {
-    20% {
-        transform: rotateX(-90deg) translateZ(40px);
-    }
-    30% {
-        transform: rotateX(-90deg) translateZ(120px);
-    }
-    80% {
-        transform: rotateX(-90deg) translateZ(120px);
-    }
-}
-@keyframes blowout-front {
-    20% {
-        transform: rotateY(0deg) translateZ(40px);
-    }
-    30% {
-        transform: rotateY(0deg) translateZ(120px);
-    }
-    80% {
-        transform: rotateY(0deg) translateZ(120px);
-    }
-}
-@keyframes blowout-top {
-    20% {
-        transform: rotateX(90deg) translateZ(40px);
-    }
-    30% {
-        transform: rotateX(90deg) translateZ(120px);
-    }
-    80% {
-        transform: rotateX(90deg) translateZ(120px);
-    }
-}
-@keyframes blowout-back {
-    20% {
-        transform: rotateX(180deg) translateZ(40px);
-    }
-    30% {
-        transform: rotateX(180deg) translateZ(120px);
-    }
-    80% {
-        transform: rotateX(180deg) translateZ(120px);
-    }
-}
-@keyframes blowout-right {
-    20% {
-        transform: rotateY(90deg) translateZ(40px);
-    }
-    30% {
-        transform: rotateY(90deg) translateZ(120px);
-    }
-    80% {
-        transform: rotateY(90deg) translateZ(120px);
-    }
-}
-@keyframes blowout-left {
-    20% {
-        transform: rotateY(-90deg) translateZ(40px);
-    }
-    30% {
-        transform: rotateY(-90deg) translateZ(120px);
-    }
-    80% {
-        transform: rotateY(-90deg) translateZ(120px);
-    }
-}
 
 .graph-container {
     display: flex;
@@ -243,8 +165,22 @@ body {
     border-radius: 15px;
 }
 
+
+.fade-in-wrapper {
+    opacity: 0;
+    position: relative;
+    top: 15vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
 .glass-bg {
-    width: 250px;
+    width: fit-content;
+    padding-left: 20px;
+    padding-right: 20px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -261,9 +197,9 @@ body {
 .glass-bg .shine {
     position: absolute;
     top: -60%;
-    right: 95%;
+    right: 50%;
     width: 30%;
-    height: 450%;
+    height: 30vh;
     background: rgba(255,255,255,0.3);
     transform: rotate(30deg);
     filter: blur(5px);
@@ -295,6 +231,16 @@ body {
 .total-dropdown-container {
     position: absolute;
     left: 55%;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sub-dropdown-container {
+    position: absolute;
+    left: 76%;
+    top: 0;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -306,7 +252,7 @@ body {
 }
   
   
-  /* <-------------------------------------- TOTAL DROPDOWN DIV ---------------------------------->*/
+/* <-------------------------------------- TOTAL DROPDOWN DIV ---------------------------------->*/
   
 .total-dropdown {
     position: absolute;
@@ -333,13 +279,29 @@ body {
 }
 
 .dropdown-button span {
-    background-color: var(--dropdown-title-button-color);
+    /* 1. Semi-transparent base for blur to show */
+    background-color: rgba(51, 4, 4, 0.2);
+    /* 2. Optional gradient overlay for color tint */
+    background-image: radial-gradient(
+      circle at center,
+      rgba(255, 100, 50, 0.14) 30%,
+      rgba(255, 100, 50, 0.06) 100%
+    );
+    /* 3. Frosted-glass blur */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* 4. Lift-off border & shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    /* 5. Pro performance hint */
+    will-change: backdrop-filter;
+    /* 6. Size & rounding (yours) */
     width: var(--dropdown-button-width);
-    border: var(--dropdown-button-border-size) solid var(--text-color);
     height: var(--dropdown-button-height);
     border-radius: var(--dropdown-title-button-border-radius);
-    overflow-y: hidden;
-}
+    overflow: hidden;
+  }
+  
 
 .dropdown-button h1 {
     position: relative;
@@ -360,17 +322,33 @@ body {
 /* <--------------------------------------- DROPDOWN BOX -------------------------------> */
 
 .dropdown-box {
-    display: none;          /*change this to none when done debugging*/
+    /* 1. Glass base: semi-transparent for visible blur */
+    background-color: rgba(255, 255, 255, 0.2);
+  
+    /* 2. Blur filter: vendor‐prefixed first, then standard */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  
+    /* 3. Define edges: translucent border */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  
+    /* 4. Depth: soft shadow */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  
+    /* 5. Performance hint */
+    will-change: backdrop-filter;
+  
+    /* 6. Preserve existing layout */
+    display: none; /* change to block when ready */
     font-size: var(--dropdown-box-font-size);
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
-    border: var(--dropdown-box-border-size) solid var(--text-color);          /* var(--text-color) */
     max-height: var(--dropdown-options-max-height);
     width: calc(var(--dropdown-options-width) + 5px);
     border-radius: var(--dropdown-title-button-border-radius);
 }
-
+  
 .dropdown-box img {
     height: var(--dropdown-opitons-image-height);
     width: var(--dropdown-opitons-image-height);
@@ -382,6 +360,7 @@ body {
 }
 
 .dropdown-link {
+    color: cyan;
     position: relative;
     left: 80px;
     font-size: 2em;
@@ -497,9 +476,85 @@ body {
     margin-left: 10px;
 }
 
-  
+@keyframes rotate {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+    20% {
+        transform: rotateX(320deg) rotateY(320deg);
+    }
+    100% {
+        transform: rotateX(360deg) rotateY(360deg);
+    }
+}
 
-  
+@keyframes blowout-bottom {
+    20% {
+        transform: rotateX(-90deg) translateZ(40px);
+    }
+    30% {
+        transform: rotateX(-90deg) translateZ(120px);
+    }
+    80% {
+        transform: rotateX(-90deg) translateZ(120px);
+    }
+}
+@keyframes blowout-front {
+    20% {
+        transform: rotateY(0deg) translateZ(40px);
+    }
+    30% {
+        transform: rotateY(0deg) translateZ(120px);
+    }
+    80% {
+        transform: rotateY(0deg) translateZ(120px);
+    }
+}
+@keyframes blowout-top {
+    20% {
+        transform: rotateX(90deg) translateZ(40px);
+    }
+    30% {
+        transform: rotateX(90deg) translateZ(120px);
+    }
+    80% {
+        transform: rotateX(90deg) translateZ(120px);
+    }
+}
+@keyframes blowout-back {
+    20% {
+        transform: rotateX(180deg) translateZ(40px);
+    }
+    30% {
+        transform: rotateX(180deg) translateZ(120px);
+    }
+    80% {
+        transform: rotateX(180deg) translateZ(120px);
+    }
+}
+@keyframes blowout-right {
+    20% {
+        transform: rotateY(90deg) translateZ(40px);
+    }
+    30% {
+        transform: rotateY(90deg) translateZ(120px);
+    }
+    80% {
+        transform: rotateY(90deg) translateZ(120px);
+    }
+}
+@keyframes blowout-left {
+    20% {
+        transform: rotateY(-90deg) translateZ(40px);
+    }
+    30% {
+        transform: rotateY(-90deg) translateZ(120px);
+    }
+    80% {
+        transform: rotateY(-90deg) translateZ(120px);
+    }
+}
+
 @keyframes box {
     from {
         height: 0;
@@ -571,22 +626,22 @@ body {
 
 
 @keyframes fadeInUp {
-    from {
+    0% {
         opacity: 0;
         transform: translateY(20px);
     }
-    to {
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
 @keyframes fadeInDown {
-    from {
+    100% {
         opacity: 0;
         transform: translateY(-20px);
     }
-    to {
+    0% {
         opacity: 1;
         transform: translateY(0);
     }

@@ -1,18 +1,13 @@
 use dioxus::prelude::*;
 
-use crate::{misc::DropdownComponent, Route};
+use crate::{misc::{MarkdownComponent, TitleHeading}, Route};
 
+const HOMEPAGE_MARKDOWN: &str = include_str!("mushroom/mushroom_markdowns/homepage_markdown.md");
 
 #[component]
 pub fn HomePage() -> Element {
     rsx!{
-        div {  
-            class: "glass-bg",
-            div {class: "shine"  }
-            h1 {  
-                class: "heading",
-                "Index Page"
-            }
-        }
+        TitleHeading {text: "Index Page"  }
+        MarkdownComponent {text:  HOMEPAGE_MARKDOWN }
     }
 }

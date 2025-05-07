@@ -3,9 +3,12 @@ use dioxus_markdown::Markdown;
 use crate::Route;
 const INDEX_ICON: Asset = asset!("assets/index.png");
 const DATASCIENCE_ICON: Asset = asset!("assets/datascience_icon.png");
-const MUSHROOM_PNG: Asset = asset!("assets/mushroom.png");
+const MUSHROOM_ICON: Asset = asset!("assets/mushroom.png");
 const COVID_ICON: Asset = asset!("assets/covid.png");
 const KFC_STOCK_ICON: Asset = asset!("assets/kfc_stock.png");
+
+// Mushroom pages icons
+const MUSHROOM_INDEX_ICON : Asset = asset!("src/mushroom/mushroom_assets/mushroom_index_icon.png");
 
 #[component]
 pub fn CubeSpinner() -> Element {
@@ -45,10 +48,31 @@ pub fn CubeSpinner() -> Element {
 pub fn MarkdownComponent(text: ReadOnlySignal<&'static str>) -> Element {
 
     rsx!{
-        div {  
-            class: "container is-fluid",
-            Markdown {
-                src: text()
+        div {
+            class: "fade-in-wrapper",  
+            div {  
+                class: "container is-fluid",
+                Markdown {
+                    src: text()
+                }
+            }
+        }
+    }
+}
+
+
+#[component]
+pub fn TitleHeading(text: ReadOnlySignal<&'static str>)  -> Element {
+    rsx!{
+        div {
+            class: "fade-in-wrapper",
+            div {
+                class: "glass-bg",
+                div {class: "shine"}
+                h1 { 
+                    class: "heading",
+                    "{text()}"
+                }
             }
         }
     }
@@ -58,10 +82,10 @@ pub fn MarkdownComponent(text: ReadOnlySignal<&'static str>) -> Element {
 pub fn DropdownComponent() -> Element {
 
     let dropdown_options = vec![
-        ("index", Route::HomePage {}, INDEX_ICON),
-        ("mushroom", Route::MushroomIndexPage {}, MUSHROOM_PNG),
-        ("covid", Route::CovidIndexPage {}, COVID_ICON),
-        ("kfc_stock", Route::KfcIndexPage {}, KFC_STOCK_ICON),
+        ("INDEX", Route::HomePage {}, INDEX_ICON),
+        ("MUSHROOM", Route::MushroomIndexPage {}, MUSHROOM_ICON),
+        ("COVID", Route::CovidIndexPage {}, COVID_ICON),
+        ("KFC STOCK", Route::KfcIndexPage {}, KFC_STOCK_ICON),
     ];
 
     rsx! {
@@ -88,7 +112,7 @@ pub fn DropdownComponent() -> Element {
                         li {
                             span {
                                 img { src: ds_asset },
-                                Link { to: ds_route, class: "dropdown-link","{ds_name.to_uppercase().replace(\"_\",\" \")}" },
+                                Link { to: ds_route, class: "dropdown-link", "{ds_name}"},
                             }
                         }
                     },
@@ -99,3 +123,197 @@ pub fn DropdownComponent() -> Element {
     }
 }
 
+#[component]
+pub fn MushroomDropdownComponent() -> Element {
+
+    let dropdown_options = vec![
+        ("INDEX",Route::MushroomIndexPage {  }),
+        ("CAP DIAMETER",Route::MushroomCapDiaCatColumn {  }),
+        ("CAP SHAPE",Route::MushroomCapShapeColumn {  }),
+        ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
+        ("GILL COLOR",Route::MushroomGillColorColumn {  }),
+        ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
+        ("STEM WIDTH",Route::MushroomStemWidthColumn {  })
+    ];
+    let nav = navigator();
+    rsx! {
+        div {
+            class: "sub-dropdown-container",  
+            div {
+                class: "total-dropdown",
+                ul {
+                    class: "dropdown-button",
+                    li {
+                        span {
+                            width: "300px",
+                            h1 { class: "dropdown-button-title", "MUSHROOM EDA" },
+                            img { src: MUSHROOM_INDEX_ICON },
+                        }
+                    },
+                },
+                div {
+                    class: "arrow-space",
+                    span { class: "arrow" },
+                },
+                ul {
+                    class: "dropdown-box",
+                    width: "320px",
+                    max_height: "400px",
+                    for (ds_name, ds_route) in dropdown_options.into_iter() {
+                        li {
+                            span {
+                                left: "10px",
+                                height: "60px",
+                                width: "320px",
+                                cursor: "pointer",
+                                font_size: "2em",
+                                font_weight: "bold",
+                                letter_spacing: "1px",
+                                onclick: move |e| {
+                                    e.prevent_default();
+                                    nav.push(ds_route.clone());
+                                },
+                                p {  
+                                    margin: "10px",
+                                    "{ds_name}"
+                                }
+                            }
+                        }
+                    },
+                }
+            }
+        }
+        Outlet::<Route>{}
+    }
+
+}
+
+#[component]
+pub fn CovidDropdownComponent() -> Element {
+
+    let dropdown_options = vec![
+        ("INDEX",Route::MushroomIndexPage {  }),
+        ("CAP DIAMETER",Route::MushroomCapDiaCatColumn {  }),
+        ("CAP SHAPE",Route::MushroomCapShapeColumn {  }),
+        ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
+        ("GILL COLOR",Route::MushroomGillColorColumn {  }),
+        ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
+        ("STEM WIDTH",Route::MushroomStemWidthColumn {  })
+    ];
+    let nav = navigator();
+    rsx! {
+        div {
+            class: "sub-dropdown-container",  
+            div {
+                class: "total-dropdown",
+                ul {
+                    class: "dropdown-button",
+                    li {
+                        span {
+                            width: "300px",
+                            h1 { class: "dropdown-button-title", "MUSHROOM EDA" },
+                            img { src: MUSHROOM_INDEX_ICON },
+                        }
+                    },
+                },
+                div {
+                    class: "arrow-space",
+                    span { class: "arrow" },
+                },
+                ul {
+                    class: "dropdown-box",
+                    width: "320px",
+                    max_height: "400px",
+                    for (ds_name, ds_route) in dropdown_options.into_iter() {
+                        li {
+                            span {
+                                left: "10px",
+                                height: "60px",
+                                width: "320px",
+                                cursor: "pointer",
+                                font_size: "2em",
+                                font_weight: "bold",
+                                letter_spacing: "1px",
+                                onclick: move |e| {
+                                    e.prevent_default();
+                                    nav.push(ds_route.clone());
+                                },
+                                p {  
+                                    margin: "10px",
+                                    "{ds_name}"
+                                }
+                            }
+                        }
+                    },
+                }
+            }
+        }
+        Outlet::<Route>{}
+    }
+
+}
+
+#[component]
+pub fn KfcStockDropdownComponent() -> Element {
+
+    let dropdown_options = vec![
+        ("INDEX",Route::MushroomIndexPage {  }),
+        ("CAP DIAMETER",Route::MushroomCapDiaCatColumn {  }),
+        ("CAP SHAPE",Route::MushroomCapShapeColumn {  }),
+        ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
+        ("GILL COLOR",Route::MushroomGillColorColumn {  }),
+        ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
+        ("STEM WIDTH",Route::MushroomStemWidthColumn {  })
+    ];
+    let nav = navigator();
+    rsx! {
+        div {
+            class: "sub-dropdown-container",  
+            div {
+                class: "total-dropdown",
+                ul {
+                    class: "dropdown-button",
+                    li {
+                        span {
+                            width: "300px",
+                            h1 { class: "dropdown-button-title", "MUSHROOM EDA" },
+                            img { src: MUSHROOM_INDEX_ICON },
+                        }
+                    },
+                },
+                div {
+                    class: "arrow-space",
+                    span { class: "arrow" },
+                },
+                ul {
+                    class: "dropdown-box",
+                    width: "320px",
+                    max_height: "400px",
+                    for (ds_name, ds_route) in dropdown_options.into_iter() {
+                        li {
+                            span {
+                                left: "10px",
+                                height: "60px",
+                                width: "320px",
+                                cursor: "pointer",
+                                font_size: "2em",
+                                font_weight: "bold",
+                                letter_spacing: "1px",
+                                onclick: move |e| {
+                                    e.prevent_default();
+                                    nav.push(ds_route.clone());
+                                },
+                                p {  
+                                    margin: "10px",
+                                    "{ds_name}"
+                                }
+                            }
+                        }
+                    },
+                }
+            }
+        }
+        Outlet::<Route>{}
+    }
+
+}

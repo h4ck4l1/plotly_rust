@@ -1,0 +1,6 @@
+pub mod mushroom_cap_dia_cat_col;
+pub mod mushroom_cap_shape_cat_col;
+pub mod mushroom_gill_attachment_cat_col;
+pub mod mushroom_gill_color_cat_col;
+pub mod mushroom_stem_height_cat_col;
+pub mod mushroom_stem_width_cat_col;

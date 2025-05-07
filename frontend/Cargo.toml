@@ -44,3 +44,6 @@ itertools = "0.14.0"
 pulldown-cmark = { version = "0.13.0", features = ["serde"] }
 dioxus-markdown = "0.0.1"
 dioxus-motion = "0.3.1"
+
+
+

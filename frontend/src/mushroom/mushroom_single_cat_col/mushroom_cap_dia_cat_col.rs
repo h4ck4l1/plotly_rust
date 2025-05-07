@@ -1,21 +1,18 @@
-use std::{any::Any, format, time::Duration};
+#![deny(unused_imports)]
+
+use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use itertools::Itertools;
-use plotly::{ common::{color::Rgb, Font, Marker, Mode, Pad}, layout::{themes::PLOTLY_DARK, update_menu::{Button, UpdateMenu}, Axis}, plot::Traces, Histogram, Layout, Plot, Scatter};
-use serde::{Deserialize, Serialize};
+use plotly::Plot;
 use serde_json::Value;
-use tracing::info;
-use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{js_sys::Math, window, HtmlHeadElement, HtmlScriptElement};
-use crate::{misc::{CubeSpinner, MarkdownComponent}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}, Route, CUSTOM_LAYOUT};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}};
 
 
-const MUSHROOM_FIRST_CAT_COL_MARKDOWN: &str = include_str!("mushroom_markdowns/mushroom_first_cat_col_markdown.md");
+const MUSHROOM_CAP_DIA_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_first_cat_col_markdown.md");
 const MUSHROOM_CAP_DIA_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
 
 #[component]
-pub fn MushroomSingleCategoricalColumn(col_name: String) -> Element {
+pub fn MushroomCapDiaCatColumn() -> Element {
     let mut is_hidden = use_signal(|| true);
     let mut is_plot_mounted = use_signal(|| false);
     let mut is_loaded = use_signal(|| false);
@@ -26,11 +23,10 @@ pub fn MushroomSingleCategoricalColumn(col_name: String) -> Element {
     let mut table_rows = use_signal(|| Vec::new());
 
     use_effect(move || {
-        let col_name = col_name.clone();
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match mushroom_first_cat_col_data_request(col_name).await {
+            match mushroom_data_request().await {
                 Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -78,14 +74,7 @@ pub fn MushroomSingleCategoricalColumn(col_name: String) -> Element {
     };
 
     rsx!{
-        div {
-            class: "heading-container", 
-            h1 {
-                class: "heading",
-                color: "cyan", 
-                "Mushroom Cap Diameter Plot"
-            }
-        }
+        TitleHeading {text: "Mushroom Cap Diatmeter Plot"}
         div {
             class: "asset-image-container",  
             img {
@@ -124,7 +113,7 @@ pub fn MushroomSingleCategoricalColumn(col_name: String) -> Element {
                 "mushroom cap diameter observations"
             }
         }
-        MarkdownComponent { text: MUSHROOM_FIRST_CAT_COL_MARKDOWN}
+        MarkdownComponent { text: MUSHROOM_CAP_DIA_MARKDOWN}
         div {
             class: "table-container",  
             div {
@@ -139,8 +128,10 @@ pub fn MushroomSingleCategoricalColumn(col_name: String) -> Element {
 }
 
 
-async fn mushroom_first_cat_col_data_request(col_name: String) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
+async fn mushroom_data_request() -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
+    let col_name = "cap_diameter";
+
     let full_data = reqwest::Client::new()
         .get(&format!("http://localhost:3000/mushroom_{}",&col_name))
         .send()

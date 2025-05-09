@@ -12,11 +12,12 @@ pub async fn mushroom_stem_height(State(app_state): State<Arc<AppState>>) -> Res
         .map(|f| f.unwrap_or(0f32))
         .collect::<Vec<f32>>();
 
-    let stem_heigth_json = &ALL_FIT_JSON.clone()[&STEM_HEIGHT.replace("-", "_")];
+    let stem_height_json = &ALL_FIT_JSON.clone()[&STEM_HEIGHT.replace("-", "_")];
     Ok(Json(
         serde_json::json!({
             "stem_height": stem_height,
-            "stem_heigth_json": stem_heigth_json
+            "stem_height_json": stem_height_json,
+            "type": "cont"
         })
     ))
 }

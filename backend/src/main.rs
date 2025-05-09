@@ -2,7 +2,7 @@
 
 use std::sync::Arc;
 use axum::{http::HeaderValue, routing, Router};
-use backend::{mushroom_pages::{mushroom_cap_diameter::mushroom_cap_diameter, mushroom_cap_shape::mushroom_cap_shape, mushroom_gill_attachment::mushroom_gill_attachment, mushroom_gill_color::mushroom_gill_color}, AppState, BackendError, ALL_FIT_JSON, MUSHROOM};
+use backend::{mushroom_pages::{mushroom_cap_diameter::mushroom_cap_diameter, mushroom_cap_shape::mushroom_cap_shape, mushroom_class::mushroom_class, mushroom_gill_attachment::mushroom_gill_attachment, mushroom_gill_color::mushroom_gill_color, mushroom_season::mushroom_season, mushroom_stem_color::mushroom_stem_color, mushroom_stem_height::mushroom_stem_height, mushroom_stem_width::mushroom_stem_width}, AppState, BackendError, ALL_FIT_JSON, MUSHROOM};
 use hyper::Method;
 use polars::prelude::all;
 use tower_http::cors::{Any, CorsLayer};
@@ -40,6 +40,11 @@ async fn main() -> Result<(),BackendError> {
         .route("/mushroom_cap_shape", routing::get(mushroom_cap_shape))
         .route("/mushroom_gill_attachment", routing::get(mushroom_gill_attachment))
         .route("/mushroom_gill_color", routing::get(mushroom_gill_color))
+        .route("/mushroom_class", routing::get(mushroom_class))
+        .route("/mushroom_stem_color", routing::get(mushroom_stem_color))
+        .route("/mushroom_stem_height", routing::get(mushroom_stem_height))
+        .route("/mushroom_stem_width", routing::get(mushroom_stem_width))
+        .route("/mushroom_season", routing::get(mushroom_season))
         .with_state(app_state)
         .layer(cors_layer);
 

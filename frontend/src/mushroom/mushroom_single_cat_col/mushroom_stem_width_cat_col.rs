@@ -1,21 +1,18 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use plotly::Plot;
-use serde_json::Value;
-use crate::{misc::{CubeSpinner, MarkdownComponent}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}};
-
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 const MUSHROOM_STEM_WIDTH_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_stem_width_markdown.md");
-const MUSHROOM_STEM_WIDTH_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_diameter.png");
+const MUSHROOM_STEM_WIDTH_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/stem_width.png");
 
 #[component]
 pub fn MushroomStemWidthColumn() -> Element {
     let mut is_hidden = use_signal(|| true);
     let mut is_plot_mounted = use_signal(|| false);
     let mut is_loaded = use_signal(|| false);
-    let plot_div_id = use_signal(|| "mushroom-plot");
-    let table_div_id = use_signal(|| "mushroom-cap-dia-table");
+    let plot_div_id = use_signal(|| "mushroom-stem-width-plot");
+    let table_div_id = use_signal(|| "mushroom-stem-width-table");
     let mut error_response = use_signal(|| "".to_string());
     let mut scale_value = use_motion(1f32);
     let mut table_rows = use_signal(|| Vec::new());
@@ -24,7 +21,7 @@ pub fn MushroomStemWidthColumn() -> Element {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match mushroom_data_request().await {
+            match single_col_histogram_request("stem_width",0f32).await {
                 Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -77,7 +74,7 @@ pub fn MushroomStemWidthColumn() -> Element {
             h1 {
                 class: "heading",
                 color: "cyan", 
-                "Mushroom Cap Diameter Plot"
+                "Mushroom Stem Width Plot"
             }
         }
         div {
@@ -111,14 +108,16 @@ pub fn MushroomStemWidthColumn() -> Element {
         div {  
             "{error_response()}"
         }
-        div {
-            class: "sub-heading-container",
-            h1 {  
-                class: "sub-heading",
-                "mushroom cap diameter observations"
+        div {  
+            class: "fade-in-wrapper",
+            div {  
+                class: "glass-markdown",
+                h1 {  
+                    "Mushroom Stem Width Observations"
+                }
+                MarkdownComponent { text: MUSHROOM_STEM_WIDTH_MARKDOWN}
             }
         }
-        MarkdownComponent { text: MUSHROOM_STEM_WIDTH_MARKDOWN}
         div {
             class: "table-container",  
             div {
@@ -130,27 +129,4 @@ pub fn MushroomStemWidthColumn() -> Element {
             }
         }
     }
-}
-
-
-async fn mushroom_data_request() -> Result<(Plot,Vec<TableData>),anyhow::Error> {
-    
-    let col_name = "cap_diameter";
-
-    let full_data = reqwest::Client::new()
-        .get(&format!("http://localhost:3000/mushroom_{}",&col_name))
-        .send()
-        .await?
-        .json::<Value>()
-        .await?;
-    let col_data = &full_data[&col_name];
-    let fit_data = &full_data["cap_dia_json"];
-    let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
-    let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
-    Ok(get_histogram(
-        col_data, 
-        fit_data, 
-        &col_name,
-        0f32
-    ).await?)
 }

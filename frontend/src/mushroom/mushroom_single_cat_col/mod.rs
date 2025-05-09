@@ -4,3 +4,6 @@ pub mod mushroom_gill_attachment_cat_col;
 pub mod mushroom_gill_color_cat_col;
 pub mod mushroom_stem_height_cat_col;
 pub mod mushroom_stem_width_cat_col;
+pub mod mushroom_class;
+pub mod mushroom_season;
+pub mod mushroom_stem_color;

@@ -1,5 +1,3 @@
 - Mushroom Cap Shape is a categorical column with unique values ranging from 0 to 6, with a median value of 5. The shape of a mushroom cap can vary significantly among species, which often aids in their identification. Common shapes include conical, convex, flat, and umbonate. For instance, the Fly Agaric (Amanita muscaria) typically has a convex to flat cap shape, while the Oyster Mushroom (Pleurotus ostreatus) has a more oyster-like shape.
 
 - Fitting of all common categorical distribution tests has been carried out for this column. Among the distributions tested, Cap Shape didn't ascribe to any distributions. As a result, we reject all the null hypotheses that distributions for cap shape exist at all significance levels α: 0.1, 0.05, 0.001.
-
-**_Click on the distribution name to see the fit associated with it._**

@@ -16,7 +16,8 @@ pub async fn mushroom_gill_color(State(app_state): State<Arc<AppState>>) -> Resu
     Ok(Json(
         serde_json::json!({
             "gill_color": gill_color,
-            "gill_color_json": gill_color_json
+            "gill_color_json": gill_color_json,
+            "type": "cat"
         })
     ))
 }

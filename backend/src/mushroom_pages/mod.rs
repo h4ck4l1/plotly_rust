@@ -6,6 +6,4 @@ pub mod mushroom_season;
 pub mod mushroom_stem_color;
 pub mod mushroom_stem_height;
 pub mod mushroom_stem_width;
-
-
-
+pub mod mushroom_class;

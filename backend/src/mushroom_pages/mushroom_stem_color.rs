@@ -16,7 +16,8 @@ pub async fn mushroom_stem_color(State(app_state): State<Arc<AppState>>) -> Resu
     Ok(Json(
         serde_json::json!({
             "stem_color": stem_color,
-            "stem_color_json": stem_color_json
+            "stem_color_json": stem_color_json,
+            "type": "cat"
         })
     ))
 }

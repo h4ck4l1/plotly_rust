@@ -48,13 +48,10 @@ pub fn CubeSpinner() -> Element {
 pub fn MarkdownComponent(text: ReadOnlySignal<&'static str>) -> Element {
 
     rsx!{
-        div {
-            class: "fade-in-wrapper",  
-            div {  
-                class: "container is-fluid",
-                Markdown {
-                    src: text()
-                }
+        div {  
+            class: "container is-fluid",
+            Markdown {
+                src: text()
             }
         }
     }
@@ -62,12 +59,15 @@ pub fn MarkdownComponent(text: ReadOnlySignal<&'static str>) -> Element {
 
 
 #[component]
-pub fn TitleHeading(text: ReadOnlySignal<&'static str>)  -> Element {
+pub fn TitleHeading(text: ReadOnlySignal<&'static str>, border_radius: Option<&'static str>)  -> Element {
     rsx!{
         div {
             class: "fade-in-wrapper",
+            position: "relative",
+            top: "15vh",
             div {
                 class: "glass-bg",
+                border_radius,
                 div {class: "shine"}
                 h1 { 
                     class: "heading",
@@ -132,8 +132,9 @@ pub fn MushroomDropdownComponent() -> Element {
         ("CAP SHAPE",Route::MushroomCapShapeCatColumn {  }),
         ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
         ("GILL COLOR",Route::MushroomGillColorColumn {  }),
-        ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
-        ("STEM WIDTH",Route::MushroomStemWidthColumn {  })
+        ("STEM HEIGHT",Route::MushroomStemHeightColumn {  }),
+        ("STEM WIDTH",Route::MushroomStemWidthColumn {  }),
+        ("CLASS",Route::MushroomClassCatColumn {  }),
     ];
     let nav = navigator();
     rsx! {
@@ -197,7 +198,7 @@ pub fn CovidDropdownComponent() -> Element {
         ("CAP SHAPE",Route::MushroomCapShapeCatColumn {  }),
         ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
         ("GILL COLOR",Route::MushroomGillColorColumn {  }),
-        ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
+        ("STEM HEIGHT",Route::MushroomStemHeightColumn {  }),
         ("STEM WIDTH",Route::MushroomStemWidthColumn {  })
     ];
     let nav = navigator();
@@ -262,7 +263,7 @@ pub fn KfcStockDropdownComponent() -> Element {
         ("CAP SHAPE",Route::MushroomCapShapeCatColumn {  }),
         ("GILL ATTACHMENT",Route::MushroomGillAttachmentColumn {  }),
         ("GILL COLOR",Route::MushroomGillColorColumn {  }),
-        ("STEM HEIGHT",Route::MushroomStemHeigthColumn {  }),
+        ("STEM HEIGHT",Route::MushroomStemHeightColumn {  }),
         ("STEM WIDTH",Route::MushroomStemWidthColumn {  })
     ];
     let nav = navigator();
@@ -316,4 +317,33 @@ pub fn KfcStockDropdownComponent() -> Element {
         Outlet::<Route>{}
     }
 
+}
+
+
+#[component]
+pub fn SmallBreak() -> Element {
+    rsx! {
+        div {  
+            class: "small-break"
+        }
+    }
+}
+
+
+#[component]
+pub fn MediumBreak() -> Element {
+    rsx! {
+        div {  
+            class: "medium-break"
+        }
+    }
+}
+
+#[component]
+pub fn LargeBreak() -> Element {
+    rsx!{
+        div {  
+            class: "large-break"
+        }
+    }
 }

@@ -16,7 +16,8 @@ pub async fn mushroom_gill_attachment(State(app_state): State<Arc<AppState>>) ->
     Ok(Json(
         serde_json::json!({
             "gill_attachment": gill_attachment,
-            "gill_attachment_json": gill_attachment_json
+            "gill_attachment_json": gill_attachment_json,
+            "type": "cat"
         })
     ))
 }

@@ -18,7 +18,8 @@ pub async fn mushroom_cap_shape(State(app_state): State<Arc<AppState>>) -> Resul
     Ok(Json(
         serde_json::json!({
             "cap_shape": cap_shape,
-            "cap_shape_json": cap_shape_json
+            "cap_shape_json": cap_shape_json,
+            "type": "cat"
         })
     ))
 }

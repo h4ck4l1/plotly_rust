@@ -16,7 +16,8 @@ pub async fn mushroom_stem_width(State(app_state): State<Arc<AppState>>) -> Resu
     Ok(Json(
         serde_json::json!({
             "stem_width": stem_width,
-            "stem_width_json": stem_width_json
+            "stem_width_json": stem_width_json,
+            "type": "cont"
         })
     ))
 }

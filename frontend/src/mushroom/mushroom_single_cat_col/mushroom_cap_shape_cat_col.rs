@@ -1,14 +1,7 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use plotly::Plot;
-use serde_json::Value;
-use crate::{
-    misc::{CubeSpinner, MarkdownComponent, TitleHeading},
-    mushroom::get_histogram,
-    plotly_callback,
-    table_callback::{new_table, TableData},
-};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 const MUSHROOM_CAP_SHAPE_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_cap_shape_markdown.md");
 const MUSHROOM_CAP_SHAPE_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_shape.png");
@@ -28,7 +21,7 @@ pub fn MushroomCapShapeCatColumn() -> Element {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match mushroom_data_request().await {
+            match single_col_histogram_request("cap_shape",0f32).await {
                 Ok((plot, trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -101,14 +94,16 @@ pub fn MushroomCapShapeCatColumn() -> Element {
             }
         }
         div { "{error_response()}" }
-        div {
-            class: "sub-heading-container",
-            h1 {
-                class: "sub-heading",
-                "mushroom cap shape observations"
+        div {  
+            class: "fade-in-wrapper",
+            div {  
+                class: "glass-markdown",
+                h1 {  
+                    "Mushroom Cap Shape Observations"
+                }
+                MarkdownComponent { text: MUSHROOM_CAP_SHAPE_MARKDOWN}
             }
         }
-        MarkdownComponent { text: MUSHROOM_CAP_SHAPE_MARKDOWN }
         div {
             class: "table-container",
             div {
@@ -120,22 +115,4 @@ pub fn MushroomCapShapeCatColumn() -> Element {
             }
         }
     }
-}
-
-async fn mushroom_data_request() -> Result<(Plot, Vec<TableData>), anyhow::Error> {
-    let col_name = "cap_shape";
-
-    let full_data = reqwest::Client::new()
-        .get(&format!("http://localhost:3000/mushroom_{}", &col_name))
-        .send()
-        .await?
-        .json::<Value>()
-        .await?;
-
-    let col_data = &full_data[&col_name];
-    let fit_data = &full_data["cap_shape_json"];
-    let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
-    let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
-
-    Ok(get_histogram(col_data, fit_data, &col_name, 0f32).await?)
 }

@@ -7,6 +7,7 @@ pub mod plotly_callback;
 pub mod table_callback;
 pub mod home_page;
 pub mod misc;
+pub mod misc_callback;
 
 use std::{borrow::Cow, cell::LazyCell};
 use dioxus::document;
@@ -32,8 +33,9 @@ use mushroom::{
         mushroom_cap_shape_cat_col::MushroomCapShapeCatColumn,
         mushroom_gill_attachment_cat_col::MushroomGillAttachmentColumn,
         mushroom_gill_color_cat_col::MushroomGillColorColumn,
-        mushroom_stem_height_cat_col::MushroomStemHeigthColumn,
-        mushroom_stem_width_cat_col::MushroomStemWidthColumn
+        mushroom_stem_height_cat_col::MushroomStemHeightColumn,
+        mushroom_stem_width_cat_col::MushroomStemWidthColumn,
+        mushroom_class::MushroomClassCatColumn
     },
     mushroom_double_cat_col::MushroomDoubleCategoricalColumn,
     mushroom_index::MushroomIndexPage
@@ -108,9 +110,11 @@ pub enum Route {
                     #[route("/gill_color")]
                     MushroomGillColorColumn {},
                     #[route("/stem_heigth")]
-                    MushroomStemHeigthColumn {},
+                    MushroomStemHeightColumn {},
                     #[route("/stem_width")]
                     MushroomStemWidthColumn {},
+                    #[route("/class")]
+                    MushroomClassCatColumn {},
                 #[end_nest]
                 #[nest("/double_variable")]
                     #[route("/double?:first_col&:second_col")]

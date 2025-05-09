@@ -1,0 +1,5 @@
+ - Mushroom Gill Color is a categorical column representing the color of the gills. 
+- This characteristic is important for identifying mushroom species, as gill colors can vary widely.
+- There are 12 different gill color categories, ranging from 0 to 11, with a median value of 8 and a mode of 10.
+- Common Gill colors in mushrooms include, White, Brown, Pink, Yellow, Black, Grey, Red, Green, Blue, Purple.
+- Comprehensive tests on common categorical distributions have been conducted. The results indicate that Gill Color does not adhere to any specific distribution, leading us to reject the null hypothesis for all significance levels α: 0.1, 0.05, 0.001.

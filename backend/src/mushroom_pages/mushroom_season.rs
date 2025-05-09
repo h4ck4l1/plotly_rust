@@ -16,7 +16,8 @@ pub async fn mushroom_season(State(app_state): State<Arc<AppState>>) -> Result<i
     Ok(Json(
         serde_json::json!({
             "season": season,
-            "season_json": season_json
+            "season_json": season_json,
+            "type": "cat"
         })
     ))
 }

@@ -1,28 +1,27 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
+use crate::{misc::{CubeSpinner, MarkdownComponent, SmallBreak, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::new_table};
 
-
-const MUSHROOM_STEM_HEIGHT_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_stem_height_markdown.md");
-const MUSHROOM_STEM_HEIGHT_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/stem_height.png");
+const MUSHROOM_CLASS_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_class_markdown.md");
+const MUSHROOM_CLASS_POISON_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/posion.jpeg");
+const MUSHROOM_CLASS_EDIBLE_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/edible_mushroom.png");
 
 #[component]
-pub fn MushroomStemHeightColumn() -> Element {
+pub fn MushroomClassCatColumn() -> Element {
     let mut is_hidden = use_signal(|| true);
     let mut is_plot_mounted = use_signal(|| false);
     let mut is_loaded = use_signal(|| false);
-    let plot_div_id = use_signal(|| "mushroom-stem-height-plot");
-    let table_div_id = use_signal(|| "mushroom-stem-height-table");
+    let plot_div_id = use_signal(|| "mushroom-class-plot");
+    let table_div_id = use_signal(|| "mushroom-class-table");
     let mut error_response = use_signal(|| "".to_string());
-    let mut scale_value = use_motion(1f32);
     let mut table_rows = use_signal(|| Vec::new());
 
     use_effect(move || {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match single_col_histogram_request("stem_height",0f32).await {
+            match single_col_histogram_request("class",0f32).await {
                 Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -51,36 +50,9 @@ pub fn MushroomStemHeightColumn() -> Element {
         });
     });
 
-        
-
-    let mouse_enter_scaleup = move |_| {
-        scale_value.animate_to(1.2, AnimationConfig::new(
-            AnimationMode::Spring(
-                Spring::default()
-            )
-        ));
-    };
-
-    let mouse_leave_scaledown = move |_| {
-        scale_value.animate_to(1.0, AnimationConfig::new(
-            AnimationMode::Spring(
-                Spring::default()
-            )
-        ));
-    };
-
     rsx!{
-        TitleHeading {text: "Mushroom Stem Height Plot"  }
-        div {
-            class: "asset-image-container",  
-            img {
-                class:"asset-image",
-                onmouseenter: mouse_enter_scaleup,
-                onmouseleave: mouse_leave_scaledown,
-                style: "transform: scale({scale_value.get_value()})",
-                src: MUSHROOM_STEM_HEIGHT_IMAGE
-            }
-        }
+        TitleHeading {text: "Mushroom Class Plot"}
+        SmallBreak {  }
         if is_hidden() {
             div {
                 class: "cube-spinner",
@@ -107,9 +79,43 @@ pub fn MushroomStemHeightColumn() -> Element {
             div {  
                 class: "glass-markdown",
                 h1 {  
-                    "Mushroom Stem Height Observations"
+                    "Mushroom Class Observations"
                 }
-                MarkdownComponent { text: MUSHROOM_STEM_HEIGHT_MARKDOWN}
+                MarkdownComponent { text: MUSHROOM_CLASS_MARKDOWN}
+            }
+        }
+        span {
+            display: "flex",
+            div {
+                padding_top: "100px",
+                padding_right: "100px",
+                padding_left: "100px",
+                h3 {  
+                    "Some Common Poisonous Mushrooms"
+                }
+                img {
+                    height: "350px",
+                    width: "350px",
+                    border: "2px solid cyan",
+                    position: "relative",
+                    top: "50px",
+                    src: MUSHROOM_CLASS_POISON_IMAGE
+                }
+            }
+            div {
+                padding_top: "100px",
+                padding_left: "100px",
+                padding_right: "100px",
+                h3 {  
+                    "Some Common Edible Mushrooms"
+                }
+                img {  
+                    height: "350px",
+                    width: "350px",
+                    margin_top: "50px",
+                    border: "2px solid cyan",
+                    src: MUSHROOM_CLASS_EDIBLE_IMAGE
+                }
             }
         }
         div {

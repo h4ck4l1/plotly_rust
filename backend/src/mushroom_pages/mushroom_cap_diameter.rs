@@ -18,7 +18,8 @@ pub async fn mushroom_cap_diameter(State(app_state): State<Arc<AppState>>) -> Re
     Ok(Json(
         serde_json::json!({
             "cap_diameter": cap_diameter,
-            "cap_diameter_json": cap_diameter_json
+            "cap_diameter_json": cap_diameter_json,
+            "type": "cont"
         })
     ))
 

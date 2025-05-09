@@ -3,9 +3,7 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use plotly::Plot;
-use serde_json::{Map, Value};
-use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::get_histogram, plotly_callback, table_callback::{new_table, TableData}};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 
 const MUSHROOM_CAP_DIA_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_cap_dia_markdown.md");
@@ -26,7 +24,7 @@ pub fn MushroomCapDiaCatColumn() -> Element {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match mushroom_data_request().await {
+            match single_col_histogram_request("cap_diameter",0f32).await {
                 Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -107,13 +105,15 @@ pub fn MushroomCapDiaCatColumn() -> Element {
             "{error_response()}"
         }
         div {
-            class: "sub-heading-container",
-            h1 {  
-                class: "sub-heading",
-                "mushroom cap diameter observations"
+            class: "fade-in-wrapper",
+            div {  
+                class: "glass-markdown",
+                h1 {  
+                    "Mushroom Cap Diameter Observations"
+                }
+                MarkdownComponent { text: MUSHROOM_CAP_DIA_MARKDOWN}
             }
         }
-        MarkdownComponent { text: MUSHROOM_CAP_DIA_MARKDOWN}
         div {
             class: "table-container",  
             div {
@@ -125,25 +125,4 @@ pub fn MushroomCapDiaCatColumn() -> Element {
             }
         }
     }
-}
-
-
-async fn mushroom_data_request() -> Result<(Plot,Vec<TableData>),anyhow::Error> {
-    
-    let col_name = "cap_diameter";
-
-    let mut full_data = reqwest::Client::new()
-        .get(&format!("http://localhost:3000/mushroom_{}",&col_name))
-        .send()
-        .await?
-        .json::<Map<String,Value>>()
-        .await?;
-    let col_data = serde_json::from_value::<Vec<f32>>(full_data.remove(col_name).unwrap())?;
-    let fit_data = full_data.remove(&format!("{}_json",col_name)).unwrap();
-    Ok(get_histogram(
-        col_data, 
-        fit_data, 
-        &col_name,
-        0f32
-    ).await?)
 }

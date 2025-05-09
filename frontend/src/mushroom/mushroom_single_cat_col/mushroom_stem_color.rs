@@ -3,17 +3,16 @@ use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
 use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
-
-const MUSHROOM_STEM_HEIGHT_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_stem_height_markdown.md");
-const MUSHROOM_STEM_HEIGHT_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/stem_height.png");
+const MUSHROOM_STEM_COLOR_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_stem_color_markdown.md");
+const MUSHROOM_STEM_COLOR_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/stem_color.jpeg");
 
 #[component]
-pub fn MushroomStemHeightColumn() -> Element {
+pub fn MushroomStemColorColumn() -> Element {
     let mut is_hidden = use_signal(|| true);
     let mut is_plot_mounted = use_signal(|| false);
     let mut is_loaded = use_signal(|| false);
-    let plot_div_id = use_signal(|| "mushroom-stem-height-plot");
-    let table_div_id = use_signal(|| "mushroom-stem-height-table");
+    let plot_div_id = use_signal(|| "mushroom-stem-color-plot");
+    let table_div_id = use_signal(|| "mushroom-stem-color-table");
     let mut error_response = use_signal(|| "".to_string());
     let mut scale_value = use_motion(1f32);
     let mut table_rows = use_signal(|| Vec::new());
@@ -22,7 +21,7 @@ pub fn MushroomStemHeightColumn() -> Element {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match single_col_histogram_request("stem_height",0f32).await {
+            match single_col_histogram_request("stem_color",0f32).await {
                 Ok((plot,trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -70,7 +69,14 @@ pub fn MushroomStemHeightColumn() -> Element {
     };
 
     rsx!{
-        TitleHeading {text: "Mushroom Stem Height Plot"  }
+        div {
+            class: "heading-container", 
+            h1 {
+                class: "heading",
+                color: "cyan", 
+                "Mushroom Stem Color Plot"
+            }
+        }
         div {
             class: "asset-image-container",  
             img {
@@ -78,7 +84,7 @@ pub fn MushroomStemHeightColumn() -> Element {
                 onmouseenter: mouse_enter_scaleup,
                 onmouseleave: mouse_leave_scaledown,
                 style: "transform: scale({scale_value.get_value()})",
-                src: MUSHROOM_STEM_HEIGHT_IMAGE
+                src: MUSHROOM_STEM_COLOR_IMAGE
             }
         }
         if is_hidden() {
@@ -107,9 +113,9 @@ pub fn MushroomStemHeightColumn() -> Element {
             div {  
                 class: "glass-markdown",
                 h1 {  
-                    "Mushroom Stem Height Observations"
+                    "Mushroom Stem Color Observations"
                 }
-                MarkdownComponent { text: MUSHROOM_STEM_HEIGHT_MARKDOWN}
+                MarkdownComponent { text: MUSHROOM_STEM_COLOR_MARKDOWN}
             }
         }
         div {

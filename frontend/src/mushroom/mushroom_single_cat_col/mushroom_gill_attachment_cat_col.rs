@@ -1,25 +1,18 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use plotly::Plot;
-use serde_json::Value;
-use crate::{
-    misc::{CubeSpinner, MarkdownComponent, TitleHeading},
-    mushroom::get_histogram,
-    plotly_callback,
-    table_callback::{new_table, TableData},
-};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 const MUSHROOM_GILL_ATTACHMENT_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_gill_attachment_markdown.md");
-const MUSHROOM_GILL_ATTACHMENT_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_shape.png");
+const MUSHROOM_GILL_ATTACHMENT_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/gill_attchment.png");
 
 #[component]
 pub fn MushroomGillAttachmentColumn() -> Element {
     let mut is_hidden = use_signal(|| true);
     let mut is_plot_mounted = use_signal(|| false);
     let mut is_loaded = use_signal(|| false);
-    let plot_div_id = use_signal(|| "mushroom-cap-shape-plot");
-    let table_div_id = use_signal(|| "mushroom-cap-shape-table");
+    let plot_div_id = use_signal(|| "mushroom-gill-attachment-plot");
+    let table_div_id = use_signal(|| "mushroom-gill-attachment-table");
     let mut error_response = use_signal(|| "".to_string());
     let mut scale_value = use_motion(1f32);
     let mut table_rows = use_signal(|| Vec::new());
@@ -28,7 +21,7 @@ pub fn MushroomGillAttachmentColumn() -> Element {
         let mut is_hidden = is_hidden.clone();
         let is_plot_mounted = is_plot_mounted.clone();
         spawn(async move {
-            match mushroom_data_request().await {
+            match single_col_histogram_request("gill_attachment",0f32).await {
                 Ok((plot, trows)) => {
                     is_hidden.set(false);
                     async_std::task::sleep(Duration::from_millis(50)).await;
@@ -71,7 +64,7 @@ pub fn MushroomGillAttachmentColumn() -> Element {
     };
 
     rsx! {
-        TitleHeading { text: "Mushroom Cap Shape Plot" }
+        TitleHeading { text: "Mushroom Gill Attachment Plot" }
         div {
             class: "asset-image-container",
             img {
@@ -101,14 +94,16 @@ pub fn MushroomGillAttachmentColumn() -> Element {
             }
         }
         div { "{error_response()}" }
-        div {
-            class: "sub-heading-container",
-            h1 {
-                class: "sub-heading",
-                "mushroom cap shape observations"
+        div {  
+            class: "fade-in-wrapper",
+            div {  
+                class: "glass-markdown",
+                h1 {  
+                    "Mushroom Gill Attachment Observations"
+                }
+                MarkdownComponent { text: MUSHROOM_GILL_ATTACHMENT_MARKDOWN}
             }
         }
-        MarkdownComponent { text: MUSHROOM_GILL_ATTACHMENT_MARKDOWN }
         div {
             class: "table-container",
             div {
@@ -120,22 +115,4 @@ pub fn MushroomGillAttachmentColumn() -> Element {
             }
         }
     }
-}
-
-async fn mushroom_data_request() -> Result<(Plot, Vec<TableData>), anyhow::Error> {
-    let col_name = "cap_shape";
-
-    let full_data = reqwest::Client::new()
-        .get(&format!("http://localhost:3000/mushroom_{}", &col_name))
-        .send()
-        .await?
-        .json::<Value>()
-        .await?;
-
-    let col_data = &full_data[&col_name];
-    let fit_data = &full_data["cap_shape_json"];
-    let col_data = serde_json::from_value::<Vec<f32>>(col_data.to_owned())?;
-    let fit_data = serde_json::from_value::<Value>(fit_data.to_owned())?;
-
-    Ok(get_histogram(col_data, fit_data, &col_name, 0f32).await?)
 }

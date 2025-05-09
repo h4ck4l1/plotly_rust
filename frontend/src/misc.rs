@@ -63,8 +63,7 @@ pub fn TitleHeading(text: ReadOnlySignal<&'static str>, border_radius: Option<&'
     rsx!{
         div {
             class: "fade-in-wrapper",
-            position: "relative",
-            top: "15vh",
+            padding_top: "100px",
             div {
                 class: "glass-bg",
                 border_radius,

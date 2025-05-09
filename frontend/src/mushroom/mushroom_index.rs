@@ -9,7 +9,12 @@ static MUSHROOM_INDEX_MARKDOWN: &str = include_str!("mushroom_markdowns/mushroom
 pub fn MushroomIndexPage() -> Element {
     rsx!{
         TitleHeading { text: "Mushroom Index Page"  }
-        SmallBreak {  }
-        MarkdownComponent {text:  MUSHROOM_INDEX_MARKDOWN }
+        div {  
+            class: "fade-in-wrapper",
+            div {  
+                class: "glass-markdown",
+                MarkdownComponent {text:  MUSHROOM_INDEX_MARKDOWN }
+            }
+        }
     }
 }

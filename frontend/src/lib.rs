@@ -61,7 +61,6 @@ static MAIN_CSS: Asset = asset!("assets/main.css");
 static TAILWIND_CSS: Asset = asset!("assets/tailwind.css");
 
 
-
 // PLOTLY
 
 pub const CUSTOM_LAYOUT: LazyCell<Layout> = LazyCell::new(|| {

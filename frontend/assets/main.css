@@ -136,8 +136,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    top: 10vh;
 }
 
 .graph-class {
@@ -157,8 +155,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    top: 12vh;
 }
 
 .asset-image {
@@ -175,6 +171,7 @@ body {
     justify-content: center;
     align-items: center;
     display: flex;
+    padding-top: 50px;
     transform: translateY(20px);
     animation: fadeInUp 0.8s ease-out forwards;
 }
@@ -215,7 +212,6 @@ body {
 
 .glass-markdown {
     position: relative;
-    top: 15vh;
     max-width: 100%;
     height: fit-content;
     display: flex;
@@ -289,23 +285,17 @@ body {
 }
 
 .dropdown-button span {
-    /* 1. Semi-transparent base for blur to show */
     background-color: rgba(51, 4, 4, 0.2);
-    /* 2. Optional gradient overlay for color tint */
     background-image: radial-gradient(
       circle at center,
       rgba(255, 100, 50, 0.14) 30%,
       rgba(255, 100, 50, 0.06) 100%
     );
-    /* 3. Frosted-glass blur */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    /* 4. Lift-off border & shadow */
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    /* 5. Pro performance hint */
     will-change: backdrop-filter;
-    /* 6. Size & rounding (yours) */
     width: var(--dropdown-button-width);
     height: var(--dropdown-button-height);
     border-radius: var(--dropdown-title-button-border-radius);

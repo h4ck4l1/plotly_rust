@@ -8,16 +8,6 @@ title = "plotly_rust"
 [web.watcher]
 reload_html = true
 
-# include `assets` in web platform
-[web.resource]
-
-# Additional CSS style files
-style = ["dist/main.css"]
-
-# Additional JavaScript files
-script = []
-
-[web.resource.dev]
 
 # Javascript code file
 # serve: [dev-server] only

@@ -7,8 +7,13 @@ const HOMEPAGE_MARKDOWN: &str = include_str!("mushroom/mushroom_markdowns/homepa
 #[component]
 pub fn HomePage() -> Element {
     rsx!{
-        TitleHeading {text: "Index Page"  }
-        SmallBreak {  }
-        MarkdownComponent {text:  HOMEPAGE_MARKDOWN }
+        TitleHeading {text: "Index Page" }
+        div {  
+            class: "fade-in-wrapper",
+            div {  
+                class: "glass-markdown",
+                MarkdownComponent {text:  HOMEPAGE_MARKDOWN }
+            }
+        }
     }
 }

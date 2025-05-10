@@ -16,6 +16,7 @@ pub fn MushroomClassCatColumn() -> Element {
     let table_div_id = use_signal(|| "mushroom-class-table");
     let mut error_response = use_signal(|| "".to_string());
     let mut table_rows = use_signal(|| Vec::new());
+    let mut scale_value = use_motion(1f32);
 
     use_effect(move || {
         let mut is_hidden = is_hidden.clone();
@@ -49,6 +50,22 @@ pub fn MushroomClassCatColumn() -> Element {
             }
         });
     });
+
+    let mouse_enter_event = move |_| {
+        scale_value.animate_to(1.2, AnimationConfig::new(
+            AnimationMode::Spring(
+                Spring::default()
+            )
+        ));
+    };
+
+    let mouse_leave_event = move |_| {
+        scale_value.animate_to(1.0, AnimationConfig::new(
+            AnimationMode::Spring(
+                Spring::default()
+            )
+        ));
+    };
 
     rsx!{
         TitleHeading {text: "Mushroom Class Plot"}
@@ -86,34 +103,36 @@ pub fn MushroomClassCatColumn() -> Element {
         }
         span {
             display: "flex",
+            justify_content: "center",
+            align_content: "center",
+            gap: "300px",
             div {
-                padding_top: "100px",
-                padding_right: "100px",
-                padding_left: "100px",
                 h3 {  
+                    padding_top: "50px",
+                    padding_bottom: "100px",
                     "Some Common Poisonous Mushrooms"
                 }
                 img {
                     height: "350px",
                     width: "350px",
-                    border: "2px solid cyan",
-                    position: "relative",
-                    top: "50px",
+                    onmouseenter: mouse_enter_event,
+                    onmouseleave: mouse_leave_event,
+                    style: "transform: scale({scale_value.get_value()})",
                     src: MUSHROOM_CLASS_POISON_IMAGE
                 }
             }
             div {
-                padding_top: "100px",
-                padding_left: "100px",
-                padding_right: "100px",
                 h3 {  
+                    padding_top: "50px",
+                    padding_bottom: "100px",
                     "Some Common Edible Mushrooms"
                 }
                 img {  
                     height: "350px",
                     width: "350px",
-                    margin_top: "50px",
-                    border: "2px solid cyan",
+                    onmouseenter: mouse_enter_event,
+                    onmouseleave: mouse_leave_event,
+                    style: "transform: scale({scale_value.get_value()})",
                     src: MUSHROOM_CLASS_EDIBLE_IMAGE
                 }
             }

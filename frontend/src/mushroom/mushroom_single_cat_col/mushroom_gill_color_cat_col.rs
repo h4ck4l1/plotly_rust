@@ -64,7 +64,7 @@ pub fn MushroomGillColorColumn() -> Element {
     };
 
     rsx! {
-        TitleHeading { text: "Mushroom Cap Shape Plot" }
+        TitleHeading { text: "Mushroom Gill Color Plot" }
         div {
             class: "asset-image-container",
             img {

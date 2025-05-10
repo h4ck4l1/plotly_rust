@@ -69,14 +69,7 @@ pub fn MushroomStemWidthColumn() -> Element {
     };
 
     rsx!{
-        div {
-            class: "heading-container", 
-            h1 {
-                class: "heading",
-                color: "cyan", 
-                "Mushroom Stem Width Plot"
-            }
-        }
+        TitleHeading {text: "Mushroom Stem Width Plot" }
         div {
             class: "asset-image-container",  
             img {

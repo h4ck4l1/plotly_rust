@@ -4,10 +4,6 @@ use dioxus::prelude::*;
 
 
 
-
-
-
-
 #[component]
 pub fn MushroomDoubleCategoricalColumn(first_col: String, second_col: String) -> Element {
     rsx!{

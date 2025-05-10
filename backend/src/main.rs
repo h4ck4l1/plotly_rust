@@ -7,16 +7,29 @@ use hyper::Method;
 use polars::prelude::all;
 use tower_http::cors::{Any, CorsLayer};
 
+const IS_PRODUCTION: bool = false;
 
 #[tokio::main]
 async fn main() -> Result<(),BackendError> {
     
     tracing_subscriber::fmt::init();
 
+    dotenvy::dotenv().ok();
+    
+    let filename = if IS_PRODUCTION {
+        format!(".env.production")
+    } else {
+        format!(".env.development")
+    };
+    dotenvy::from_filename(&filename)
+        .unwrap_or_else(|_| panic!("Failed to load environment"));
+
+    let backend_api = std::env::var("API_BASE")
+        .unwrap_or_else(|_| panic!("unable to get environment variable"));
 
     let cors_layer = CorsLayer::new()
         .allow_methods([Method::GET])
-        .allow_origin(["http://localhost:8080".parse::<HeaderValue>().unwrap()])
+        .allow_origin([(&backend_api).parse::<HeaderValue>().unwrap()])
         .allow_headers(Any);
 
     let app_state = Arc::new(AppState::new(
@@ -36,15 +49,15 @@ async fn main() -> Result<(),BackendError> {
     );
 
     let app = Router::new()
-        .route("/mushroom_cap_diameter", routing::get(mushroom_cap_diameter))
-        .route("/mushroom_cap_shape", routing::get(mushroom_cap_shape))
-        .route("/mushroom_gill_attachment", routing::get(mushroom_gill_attachment))
-        .route("/mushroom_gill_color", routing::get(mushroom_gill_color))
-        .route("/mushroom_class", routing::get(mushroom_class))
-        .route("/mushroom_stem_color", routing::get(mushroom_stem_color))
-        .route("/mushroom_stem_height", routing::get(mushroom_stem_height))
-        .route("/mushroom_stem_width", routing::get(mushroom_stem_width))
-        .route("/mushroom_season", routing::get(mushroom_season))
+        .route("/api/mushroom_cap_diameter", routing::get(mushroom_cap_diameter))
+        .route("/api/mushroom_cap_shape", routing::get(mushroom_cap_shape))
+        .route("/api/mushroom_gill_attachment", routing::get(mushroom_gill_attachment))
+        .route("/api/mushroom_gill_color", routing::get(mushroom_gill_color))
+        .route("/api/mushroom_class", routing::get(mushroom_class))
+        .route("/api/mushroom_stem_color", routing::get(mushroom_stem_color))
+        .route("/api/mushroom_stem_height", routing::get(mushroom_stem_height))
+        .route("/api/mushroom_stem_width", routing::get(mushroom_stem_width))
+        .route("/api/mushroom_season", routing::get(mushroom_season))
         .with_state(app_state)
         .layer(cors_layer);
 

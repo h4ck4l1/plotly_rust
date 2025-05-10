@@ -37,7 +37,21 @@ use mushroom::{
         mushroom_stem_width_cat_col::MushroomStemWidthColumn,
         mushroom_class::MushroomClassCatColumn
     },
-    mushroom_double_cat_col::MushroomDoubleCategoricalColumn,
+    mushroom_double_cat_col::{
+        cap_diameter_vs_stem_height::CapDiameterVsStemHeight,
+        cap_diameter_vs_stem_width::CapDiameterVsStemWidth,
+        cap_shape_vs_gill_attachment::CapShapeVsGillAttachment,
+        cap_shape_vs_gill_color::CapShapeVsGillColor,
+        class_vs_cap_diameter::ClassVsCapDiameter,
+        gill_attachment_vs_gill_color::GillAttachmentVsGillColor,
+        gill_color_vs_stem_color::GillColorVsStemColor,
+        gill_color_vs_stem_height::GillColorVsStemHeight,
+        gill_color_vs_stem_width::GillColorVsStemWidth,
+        season_vs_cap_diameter::SeasonVsCapDiameter,
+        stem_color_vs_class::StemColorVsClass,
+        stem_color_vs_stem_height::StemColorVsStemHeight,
+        stem_width_vs_stem_height::StemWidthVsStemHeight,
+    },
     mushroom_index::MushroomIndexPage
 };
 
@@ -116,8 +130,32 @@ pub enum Route {
                     MushroomClassCatColumn {},
                 #[end_nest]
                 #[nest("/double_variable")]
-                    #[route("/double?:first_col&:second_col")]
-                    MushroomDoubleCategoricalColumn {first_col: String, second_col: String},
+                    #[route("/cap_diameter_vs_stem_height")]
+                    CapDiameterVsStemHeight,
+                    #[route("/cap_diameter_vs_stem_width")]
+                    CapDiameterVsStemWidth,
+                    #[route("/cap_shape_vs_gill_attachment")]
+                    CapShapeVsGillAttachment,
+                    #[route("/cap_shape_vs_gill_color")]
+                    CapShapeVsGillColor,
+                    #[route("/class_vs_cap_diameter")]
+                    ClassVsCapDiameter,
+                    #[route("/gill_attachment_vs_gill_color")]
+                    GillAttachmentVsGillColor,
+                    #[route("/gill_color_vs_stem_color")]
+                    GillColorVsStemColor,
+                    #[route("/gill_color_vs_stem_height")]
+                    GillColorVsStemHeight,
+                    #[route("/gill_color_vs_stem_width")]
+                    GillColorVsStemWidth,
+                    #[route("/season_vs_cap_diameter")]
+                    SeasonVsCapDiameter,
+                    #[route("/stem_color_vs_class")]
+                    StemColorVsClass,
+                    #[route("/stem_color_vs_stem_height")]
+                    StemColorVsStemHeight,
+                    #[route("/stem_width_vs_stem_height")]
+                    StemWidthVsStemHeight,
                 #[end_nest]
             #[route("/", MushroomIndexPage)]
             MushroomIndexPage {},

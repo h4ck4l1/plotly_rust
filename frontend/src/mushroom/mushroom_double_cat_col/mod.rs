@@ -1,0 +1,13 @@
+pub mod cap_diameter_vs_stem_height;
+pub mod cap_diameter_vs_stem_width;
+pub mod cap_shape_vs_gill_attachment;
+pub mod cap_shape_vs_gill_color;
+pub mod class_vs_cap_diameter;
+pub mod gill_attachment_vs_gill_color;
+pub mod gill_color_vs_stem_color;
+pub mod gill_color_vs_stem_height;
+pub mod gill_color_vs_stem_width;
+pub mod season_vs_cap_diameter;
+pub mod stem_color_vs_class;
+pub mod stem_color_vs_stem_height;
+pub mod stem_width_vs_stem_height;

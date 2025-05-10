@@ -16,7 +16,7 @@ pub async fn single_col_histogram_request(
 ) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
     let mut full_data = reqwest::Client::new()
-        .get(&format!("http://localhost:3000/mushroom_{}",&col_name))
+        .get(&format!("http://localhost:3000/api/mushroom_{}",&col_name))
         .send()
         .await?
         .json::<Map<String,Value>>()

@@ -86,40 +86,51 @@ pub fn DropdownComponent() -> Element {
         ("COVID", Route::CovidIndexPage {}, COVID_ICON),
         ("KFC STOCK", Route::KfcIndexPage {}, KFC_STOCK_ICON),
     ];
+    let nav = navigator();
 
     rsx! {
-        div {
-            class: "total-dropdown-container",  
-            div {
-                class: "total-dropdown",
-                ul {
+        div {  
+            class: "main-dropdown",
+            div {  
+                class: "dropdown-container",
+                div {  
                     class: "dropdown-button",
-                    li {
-                        span {
-                            h1 { class: "dropdown-button-title", "DATASET MENU" },
-                            img { src: DATASCIENCE_ICON },
+                    span {  
+                        p {  
+                            "DATASET MENU"
                         }
-                    },
-                },
-                div {
-                    class: "arrow-space",
-                    span { class: "arrow" },
-                },
-                ul {
-                    class: "dropdown-box",
-                    for (ds_name, ds_route, ds_asset) in dropdown_options.into_iter() {
-                        li {
+                        img {  
+                            src: DATASCIENCE_ICON
+                        }
+                    }
+                }
+                div {  
+                    class: "dropdown-box-container",
+                    span {  
+                        class: "arrow"
+                    }
+                    div {  
+                        class: "dropdown-box",
+                        for (option_name,option_route,option_img) in dropdown_options {
                             span {
-                                img { src: ds_asset },
-                                Link { to: ds_route, class: "dropdown-link", "{ds_name}"},
+                                onclick: move |_| {
+                                    nav.push(option_route.clone());
+                                },
+                                p {  
+                                    "{option_name}"
+                                }
+                                img {  
+                                    src: option_img
+                                }
                             }
                         }
-                    },
+                    }
                 }
             }
         }
         Outlet::<Route>{}
     }
+    
 }
 
 #[component]
@@ -137,49 +148,39 @@ pub fn MushroomDropdownComponent() -> Element {
     ];
     let nav = navigator();
     rsx! {
-        div {
-            class: "sub-dropdown-container",  
-            div {
-                class: "total-dropdown",
-                ul {
+        div {  
+            class: "sub-dropdown",
+            div {  
+                class: "dropdown-container",
+                div {  
                     class: "dropdown-button",
-                    li {
-                        span {
-                            width: "300px",
-                            h1 { class: "dropdown-button-title", "MUSHROOM EDA" },
-                            img { src: MUSHROOM_INDEX_ICON },
+                    span {  
+                        p {  
+                            "MUSHROOM MENU"
                         }
-                    },
-                },
-                div {
-                    class: "arrow-space",
-                    span { class: "arrow" },
-                },
-                ul {
-                    class: "dropdown-box",
-                    width: "320px",
-                    max_height: "400px",
-                    for (ds_name, ds_route) in dropdown_options.into_iter() {
-                        li {
+                        img {  
+                            src: MUSHROOM_INDEX_ICON
+                        }
+                    }
+                }
+                div {  
+                    class: "dropdown-box-container",
+                    span {  
+                        class: "arrow"
+                    }
+                    div {  
+                        class: "dropdown-box",
+                        for (option_name,option_route) in dropdown_options {
                             span {
-                                left: "10px",
-                                height: "60px",
-                                width: "320px",
-                                cursor: "pointer",
-                                font_size: "2em",
-                                font_weight: "bold",
-                                letter_spacing: "1px",
-                                onclick: move |e| {
-                                    e.prevent_default();
-                                    nav.push(ds_route.clone());
+                                onclick: move |_| {
+                                    nav.push(option_route.clone());
                                 },
                                 p {  
-                                    margin: "10px",
-                                    "{ds_name}"
+                                    "{option_name}"
                                 }
                             }
                         }
-                    },
+                    }
                 }
             }
         }

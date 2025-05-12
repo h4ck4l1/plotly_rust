@@ -128,7 +128,11 @@ pub fn DropdownComponent() -> Element {
                 }
             }
         }
-        Outlet::<Route>{}
+        div {
+            padding_left: "50px",
+            padding_right: "50px",
+            Outlet::<Route>{}
+        }
     }
     
 }
@@ -145,6 +149,7 @@ pub fn MushroomDropdownComponent() -> Element {
         ("STEM HEIGHT",Route::MushroomStemHeightColumn {  }),
         ("STEM WIDTH",Route::MushroomStemWidthColumn {  }),
         ("CLASS",Route::MushroomClassCatColumn {  }),
+        ("CAP DIAMETER VS STEM WIDTH", Route::CapDiameterVsStemWidth {})
     ];
     let nav = navigator();
     rsx! {

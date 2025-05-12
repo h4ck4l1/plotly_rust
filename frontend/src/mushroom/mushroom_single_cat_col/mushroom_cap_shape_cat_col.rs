@@ -1,7 +1,7 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::mushroom_single_cat_col::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 const MUSHROOM_CAP_SHAPE_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_cap_shape_markdown.md");
 const MUSHROOM_CAP_SHAPE_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/cap_shape.png");
@@ -65,14 +65,17 @@ pub fn MushroomCapShapeCatColumn() -> Element {
 
     rsx! {
         TitleHeading { text: "Mushroom Cap Shape Plot" }
-        div {
-            class: "asset-image-container",
-            img {
-                class: "asset-image",
-                onmouseenter: mouse_enter_scaleup,
-                onmouseleave: mouse_leave_scaledown,
-                style: "transform: scale({scale_value.get_value()})",
-                src: MUSHROOM_CAP_SHAPE_IMAGE
+        div {  
+            class: "fade-in-wrapper",
+            div {
+                class: "asset-image-container",
+                img {
+                    class: "asset-image",
+                    onmouseenter: mouse_enter_scaleup,
+                    onmouseleave: mouse_leave_scaledown,
+                    style: "transform: scale({scale_value.get_value()})",
+                    src: MUSHROOM_CAP_SHAPE_IMAGE
+                }
             }
         }
         if is_hidden() {

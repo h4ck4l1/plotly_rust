@@ -1,7 +1,7 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::mushroom_single_cat_col::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 const MUSHROOM_GILL_COLOR_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_gill_color_markdown.md");
 const MUSHROOM_GILL_COLOR_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/gill_color.jpeg");
@@ -65,14 +65,17 @@ pub fn MushroomGillColorColumn() -> Element {
 
     rsx! {
         TitleHeading { text: "Mushroom Gill Color Plot" }
-        div {
-            class: "asset-image-container",
-            img {
-                class: "asset-image",
-                onmouseenter: mouse_enter_scaleup,
-                onmouseleave: mouse_leave_scaledown,
-                style: "transform: scale({scale_value.get_value()})",
-                src: MUSHROOM_GILL_COLOR_IMAGE
+        div {  
+            class: "fade-in-wrapper",
+            div {
+                class: "asset-image-container",
+                img {
+                    class: "asset-image",
+                    onmouseenter: mouse_enter_scaleup,
+                    onmouseleave: mouse_leave_scaledown,
+                    style: "transform: scale({scale_value.get_value()})",
+                    src: MUSHROOM_GILL_COLOR_IMAGE
+                }
             }
         }
         if is_hidden() {

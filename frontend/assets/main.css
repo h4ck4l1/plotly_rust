@@ -206,6 +206,8 @@ html, body {
 .main-dropdown {
     position: relative;
     width: fit-content;
+    left: 60vw;
+    margin-top: 3px;
 }
 
 .sub-dropdown {
@@ -213,6 +215,7 @@ html, body {
     width: fit-content;
     bottom: 64px;
     left: 80%;
+    margin-top: 5px;
 }
 
 
@@ -226,8 +229,12 @@ html, body {
     :root {
         --dropdown-button-width: 120px;
     }
+    .main-dropdown {
+        left: 30%;
+    }
     .sub-dropdown {
         left: 50%;
+        margin-top: 5px;
     }
     .dropdown-button span p {
         display: none;
@@ -240,12 +247,12 @@ html, body {
         --dropdown-button-width: 80px;
     }
     .main-dropdown {
-        left: 30%;
+        left: 20%;
     }
     .sub-dropdown {
         position: relative;
-        margin-top: 66px;
-        left: 30%;
+        margin-top: 5px;
+        left: 60%;
     }
     .dropdown-button span p {
         display: none;

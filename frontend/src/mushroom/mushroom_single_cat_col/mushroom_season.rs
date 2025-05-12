@@ -1,7 +1,7 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
+use crate::{misc::{CubeSpinner, MarkdownComponent, TitleHeading}, mushroom::mushroom_single_cat_col::single_col_histogram_request, plotly_callback, table_callback::{new_table}};
 
 const MUSHROOM_SEASON_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_season_markdown.md");
 

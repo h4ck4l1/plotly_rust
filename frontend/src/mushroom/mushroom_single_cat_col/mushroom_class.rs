@@ -1,7 +1,7 @@
 use std::{format, time::Duration};
 use dioxus::prelude::*;
 use dioxus_motion::{prelude::*, use_motion, AnimationManager};
-use crate::{misc::{CubeSpinner, MarkdownComponent, SmallBreak, TitleHeading}, mushroom::single_col_histogram_request, plotly_callback, table_callback::new_table};
+use crate::{misc::{CubeSpinner, MarkdownComponent, SmallBreak, TitleHeading}, mushroom::mushroom_single_cat_col::single_col_histogram_request, plotly_callback, table_callback::new_table};
 
 const MUSHROOM_CLASS_MARKDOWN: &str = include_str!("../mushroom_markdowns/mushroom_class_markdown.md");
 const MUSHROOM_CLASS_POISON_IMAGE: Asset = asset!("src/mushroom/mushroom_assets/posion.jpeg");

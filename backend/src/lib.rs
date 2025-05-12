@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use hyper::StatusCode;
 use serde_json::Value;
 
-pub mod mushroom_pages;
+pub mod mushroom;
 
 pub const CAP_DIAMETER: &str = "cap-diameter";
 pub const CAP_SHAPE: &str = "cap-shape";
@@ -28,6 +28,13 @@ pub static MUSHROOM: Lazy<LazyFrame> = Lazy::new(|| {
         
 });
 
+pub const CONT_COLS: Lazy<[&str;3]> = Lazy::new(|| {
+    ["cap_diameter","stem_height","stem_width"]
+});
+
+pub const CAT_COLS: Lazy<[&str;6]> = Lazy::new(|| {
+    ["cap_shape","class","gill_attachment","gill_color","season","stem_color"]
+});
 
 pub static ALL_FIT_JSON: Lazy<Value> = Lazy::new(|| {
     let json_string = fs::read_to_string("datafolder/all_cols_fitted_data.json")
@@ -66,7 +73,9 @@ pub enum BackendError {
     #[error("\n Polars General Error occurred, Can be from Collecting\nerror: {0}\n")]
     PolarsGeneralError(#[from] polars::error::PolarsError),
     #[error("\n General Std Io Error\nerror: {0}\n")]
-    StdIoError(#[from] std::io::Error)
+    StdIoError(#[from] std::io::Error),
+    #[error("\n SmartCore Failed Error\nerror: {0}")]
+    SmartCoreError(#[from] smartcore::error::Failed),
 }
 
 
@@ -76,6 +85,7 @@ impl IntoResponse for BackendError {
             BackendError::PolarsGeneralError(error) => (StatusCode::FAILED_DEPENDENCY,format!("PolarsGeneralError: {}",error.to_string())),
             BackendError::TokioJoinError(error) => (StatusCode::EXPECTATION_FAILED,format!("TokioJoinError: {}",error.to_string())),
             BackendError::StdIoError(error) => (StatusCode::EXPECTATION_FAILED,format!("StdIoError: {}",error.to_string())),
+            BackendError::SmartCoreError(failed) => (StatusCode::EXPECTATION_FAILED, format!("SmartCoreError: {}",failed.to_string())),
         };
 
         (status_code,error_string).into_response()

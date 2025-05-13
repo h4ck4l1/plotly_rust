@@ -27,9 +27,9 @@ pub async fn single_col_histogram_request(
 ) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
     let mut full_data = get_col_data(col_name, true).await?;
-    let col_data = serde_json::from_value::<Vec<f32>>(full_data.remove(col_name).unwrap())?;
-    let fit_data = full_data.remove(&format!("{}_json",col_name)).unwrap();
-    let type_of_col = serde_json::from_value::<String>(full_data.remove("type").unwrap())?;
+    let col_data = serde_json::from_value::<Vec<f32>>(full_data.remove("col_data").unwrap())?;
+    let fit_data = full_data.remove("col_json").unwrap();
+    let type_of_col = serde_json::from_value::<String>(full_data.remove("type_of_col").unwrap())?;
     let mut fit_data_map = serde_json::from_value::<Map<String, Value>>(fit_data)?;
     let mut table_data = Vec::new();
     let x = serde_json::from_value::<Vec<f32>>(fit_data_map.remove("x").unwrap())?;

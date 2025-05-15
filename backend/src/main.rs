@@ -7,27 +7,12 @@ use hyper::Method;
 use polars::prelude::all;
 use tower_http::cors::{Any, CorsLayer};
 
-const IS_PRODUCTION: bool = true;
+const IS_PRODUCTION: bool = false;
 
 #[tokio::main]
 async fn main() -> Result<(),BackendError> {
     
     tracing_subscriber::fmt::init();
-
-    dotenvy::dotenv().ok();
-    
-    let filename = if IS_PRODUCTION {
-        format!(".env.production")
-    } else {
-        format!(".env.development")
-    };
-    dotenvy::from_filename(&filename)
-        .unwrap_or_else(|_| panic!("Failed to load environment"));
-
-    let backend_api = std::env::var("API_BASE")
-        .unwrap_or_else(|_| panic!("unable to get environment variable"));
-
-    println!("API_BASE: {}",backend_api);
 
     let app_state = Arc::new(AppState::new(
 
@@ -45,9 +30,20 @@ async fn main() -> Result<(),BackendError> {
         )
     );
 
-    let app = Router::new()
+    let app = if !IS_PRODUCTION {
+        let cors_layer = CorsLayer::new()
+            .allow_headers(Any)
+            .allow_origin(Any)
+            .allow_methods(Any);
+        Router::new()
         .route("/api/mushroom", routing::get(mushroom_handler))
-        .with_state(app_state);
+        .with_state(app_state)
+        .layer(cors_layer)
+    } else {
+        Router::new()
+        .route("/api/mushroom", routing::get(mushroom_handler))
+        .with_state(app_state)
+    };
 
 
     let listener = tokio::net::TcpListener::bind(

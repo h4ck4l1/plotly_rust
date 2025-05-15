@@ -50,18 +50,16 @@ pub fn CapDiameterVsStemWidth() -> Element {
 }
 
 
-
-
-
 pub async fn ContcolvsContcol() -> Result<Plot,anyhow::Error> {
+
     let first_col = "cap_diameter";
     let second_col = "stem_width";
 
-    let mut first_col_data = get_col_data(&first_col, None).await?;
-    let mut second_col_data = get_col_data(&second_col, None).await?;
+    let mut full_data = get_col_data(&first_col, Some(second_col.to_string())).await?;
 
-    let x = serde_json::from_value::<Vec<f32>>(first_col_data.remove(first_col).unwrap())?;
-    let y = serde_json::from_value::<Vec<f32>>(second_col_data.remove(second_col).unwrap())?;
+    let x = serde_json::from_value::<Vec<f32>>(full_data.remove("col_data").unwrap())?;
+    let y = serde_json::from_value::<Vec<f32>>(full_data.remove("second_col_data").unwrap())?;
+    let y_hat = serde_json::from_value::<Vec<f32>>(full_data.remove("fit_data").unwrap())?;
 
     let mut plot = Plot::new();
 
@@ -75,7 +73,13 @@ pub async fn ContcolvsContcol() -> Result<Plot,anyhow::Error> {
     plot.add_trace(
         Scatter::new(x.clone(), y)
             .mode(plotly::common::Mode::Markers)
+            .web_gl_mode(true)
+    );
 
+    plot.add_trace(
+        Scatter::new(x.clone(), y_hat)
+            .mode(plotly::common::Mode::Lines)
+            .web_gl_mode(true)
     );
 
     Ok(plot)

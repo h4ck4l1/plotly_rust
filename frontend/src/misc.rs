@@ -149,8 +149,12 @@ pub fn MushroomDropdownComponent() -> Element {
         ("STEM HEIGHT",Route::MushroomStemHeightColumn {  }),
         ("STEM WIDTH",Route::MushroomStemWidthColumn {  }),
         ("CLASS",Route::MushroomClassCatColumn {  }),
-        ("CAP DIAMETER VS STEM WIDTH", Route::CapDiameterVsStemWidth {})
     ];
+
+    let dropdown_options_cat_v_cat = vec![
+        ("CAP DIAMETER VS STEM WIDTH", Route::CapDiameterVsStemWidth {}),
+    ];
+
     let nav = navigator();
     rsx! {
         div {  
@@ -177,6 +181,23 @@ pub fn MushroomDropdownComponent() -> Element {
                         class: "dropdown-box",
                         for (option_name,option_route) in dropdown_options {
                             span {
+                                onclick: move |_| {
+                                    nav.push(option_route.clone());
+                                },
+                                p {  
+                                    "{option_name}"
+                                }
+                            }
+                        }
+                        span {
+                            class: "class-divider",  
+                            p {
+                                class: "class-divider-content",
+                                "categorical vs categorical columns"
+                            }
+                        }
+                        for (option_name,option_route) in dropdown_options_cat_v_cat {
+                            span { 
                                 onclick: move |_| {
                                     nav.push(option_route.clone());
                                 },

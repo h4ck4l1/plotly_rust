@@ -7,7 +7,7 @@ use hyper::Method;
 use polars::prelude::all;
 use tower_http::cors::{Any, CorsLayer};
 
-const IS_PRODUCTION: bool = false;
+const IS_PRODUCTION: bool = true;
 
 #[tokio::main]
 async fn main() -> Result<(),BackendError> {
@@ -27,10 +27,7 @@ async fn main() -> Result<(),BackendError> {
     let backend_api = std::env::var("API_BASE")
         .unwrap_or_else(|_| panic!("unable to get environment variable"));
 
-    let cors_layer = CorsLayer::new()
-        .allow_methods([Method::GET])
-        .allow_origin([(&backend_api).parse::<HeaderValue>().unwrap()])
-        .allow_headers(Any);
+    println!("API_BASE: {}",backend_api);
 
     let app_state = Arc::new(AppState::new(
 
@@ -50,12 +47,11 @@ async fn main() -> Result<(),BackendError> {
 
     let app = Router::new()
         .route("/api/mushroom", routing::get(mushroom_handler))
-        .with_state(app_state)
-        .layer(cors_layer);
+        .with_state(app_state);
 
 
     let listener = tokio::net::TcpListener::bind(
-        std::net::SocketAddr::from(([127,0,0,1],3000))
+        "[::]:3000"
     ).await?;
 
     tracing::info!("Server running on : {}",listener.local_addr().unwrap());

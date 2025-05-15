@@ -57,8 +57,8 @@ pub async fn ContcolvsContcol() -> Result<Plot,anyhow::Error> {
     let first_col = "cap_diameter";
     let second_col = "stem_width";
 
-    let mut first_col_data = get_col_data(&first_col, false).await?;
-    let mut second_col_data = get_col_data(&second_col, false).await?;
+    let mut first_col_data = get_col_data(&first_col, None).await?;
+    let mut second_col_data = get_col_data(&second_col, None).await?;
 
     let x = serde_json::from_value::<Vec<f32>>(first_col_data.remove(first_col).unwrap())?;
     let y = serde_json::from_value::<Vec<f32>>(second_col_data.remove(second_col).unwrap())?;

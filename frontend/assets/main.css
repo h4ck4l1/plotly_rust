@@ -206,7 +206,7 @@ html, body {
 .main-dropdown {
     position: relative;
     width: fit-content;
-    left: 60vw;
+    left: 10vw;
     margin-top: 3px;
 }
 

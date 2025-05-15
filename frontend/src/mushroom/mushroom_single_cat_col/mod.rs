@@ -14,8 +14,7 @@ use dioxus::html::g::format;
 use plotly::{common::{Line, Title}, layout::{themes::PLOTLY_DARK, Axis}, Histogram, Layout, Plot, Scatter};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
-use tracing::info;
-use web_sys::{console::info, js_sys::Math};
+use web_sys::js_sys::Math;
 use crate::{table_callback::TableData, CUSTOM_LAYOUT};
 
 use super::get_col_data;
@@ -26,7 +25,8 @@ pub async fn single_col_histogram_request(
     bar_gap: f32,
 ) -> Result<(Plot,Vec<TableData>),anyhow::Error> {
     
-    let mut full_data = get_col_data(col_name, true).await?;
+
+    let mut full_data: Map<String,Value> = get_col_data(col_name, None).await?;
     let col_data = serde_json::from_value::<Vec<f32>>(full_data.remove("col_data").unwrap())?;
     let fit_data = full_data.remove("col_json").unwrap();
     let type_of_col = serde_json::from_value::<String>(full_data.remove("type_of_col").unwrap())?;
